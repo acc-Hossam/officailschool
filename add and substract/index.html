@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>Kids Fruit Math – Addition & Subtraction (no zero)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: linear-gradient(145deg, #f9f1e0 0%, #f5e7c8 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            direction: ltr; /* left-to-right */
+            padding: 8px;
+            padding-top: 90px;
+            position: relative;
+        }
+
+        /* ========== fixed arrows (responsive) ========== */
+        .fixed-nav {
+            position: fixed;
+            top: 12px;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 12px;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+            background: transparent;
+            pointer-events: none;
+        }
+
+        .fixed-nav > * {
+            pointer-events: auto;
+        }
+
+        .nav-arrow-fixed {
+            background: #ffb882;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #b25d2c, 0 8px 15px rgba(0,0,0,0.25);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.07s ease;
+            user-select: none;
+            border: 3px solid #ffeac1;
+            font-size: 40px;
+            line-height: 1;
+        }
+
+        @media (max-width: 480px) {
+            .nav-arrow-fixed {
+                width: 50px;
+                height: 50px;
+                font-size: 32px;
+                box-shadow: 0 4px 0 #b25d2c, 0 6px 10px rgba(0,0,0,0.2);
+            }
+            body {
+                padding-top: 75px;
+            }
+        }
+
+        .nav-arrow-fixed:active {
+            transform: translateY(6px);
+            box-shadow: 0 2px 0 #b25d2c, 0 5px 12px rgba(0,0,0,0.2);
+        }
+
+        .nav-arrow-fixed:disabled {
+            opacity: 0.35;
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #7a4a2a;
+            pointer-events: none;
+        }
+
+        .counter-badge-fixed {
+            background: #a6d0b1;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: clamp(20px, 5vw, 30px);
+            font-weight: bold;
+            color: #1f3f1f;
+            box-shadow: inset 0 -3px 0 #5f7e5b, 0 5px 0 #4d6e4a;
+            border: 3px solid #fff1cf;
+            white-space: nowrap;
+        }
+
+        /* ========== main card ========== */
+        .card {
+            max-width: 600px;
+            width: 100%;
+            background: #fffef7;
+            border-radius: 50px 50px 40px 40px;
+            box-shadow: 0 20px 30px rgba(180, 120, 50, 0.3);
+            padding: 25px 18px 30px 18px;
+            border: 4px solid #ffcf9a;
+            margin-top: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .operation-title {
+            text-align: center;
+            font-size: clamp(40px, 10vw, 70px);
+            font-weight: 800;
+            margin: 5px 0 15px;
+            background: #ffe5c4;
+            padding: 10px 20px;
+            border-radius: 80px;
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 5px 0 #d49b6a;
+            color: #412f1f;
+            border: 3px solid #ffb475;
+            white-space: nowrap;
+        }
+
+        .fruit-equation {
+            font-size: clamp(32px, 7vw, 54px);
+            font-weight: bold;
+            background: #fdefd4;
+            padding: 20px 15px;
+            border-radius: 60px;
+            margin: 15px 0 25px;
+            text-align: center;
+            box-shadow: inset 0 0 0 3px white, 0 6px 0 #ccb197;
+            word-break: keep-all;
+        }
+
+        .fruits-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 20px 15px;
+            margin: 20px 0 15px;
+        }
+
+        .fruit-group {
+            background: #f9e5c1;
+            border-radius: 50px;
+            padding: 20px 15px;
+            box-shadow: 0 6px 0 #bda37c, inset 0 2px 15px #ffeecc;
+            min-width: 160px;
+            flex: 1 1 auto;
+            max-width: 280px;
+        }
+
+        .fruit-label {
+            font-size: clamp(18px, 4vw, 28px);
+            font-weight: 600;
+            color: #5f3d23;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #ffdbb5;
+            padding: 6px 15px;
+            border-radius: 40px;
+            white-space: nowrap;
+        }
+
+        .fruit-icons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px 12px;
+            font-size: clamp(32px, 8vw, 54px);
+            line-height: 1.2;
+        }
+
+        .operator-symbol {
+            font-size: clamp(50px, 12vw, 85px);
+            align-self: center;
+            color: #ca6742;
+            font-weight: bold;
+            text-shadow: 3px 3px 0 #ffe3b5;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .result-area {
+            background: #e2f0da;
+            border-radius: 60px;
+            padding: 20px 18px;
+            margin: 25px 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 15px 20px;
+            border: 4px solid #b1d0a7;
+        }
+
+        .result-label {
+            font-size: clamp(28px, 6vw, 40px);
+            color: #1f4f2b;
+            font-weight: 600;
+        }
+
+        .result-input {
+            border: 4px solid #fea1a1;
+            border-radius: 60px;
+            width: 130px;
+            font-size: clamp(48px, 10vw, 68px);
+            padding: 8px 12px;
+            text-align: center;
+            font-weight: bold;
+            background: white;
+            color: #2d1f0f;
+            outline: none;
+            box-shadow: 0 5px 0 #c07c7c;
+            font-family: 'Segoe UI', monospace;
+        }
+
+        @media (max-width: 400px) {
+            .result-input {
+                width: 100px;
+                font-size: 48px;
+            }
+        }
+
+        .check-feedback {
+            font-size: clamp(30px, 7vw, 45px);
+            margin-left: 5px;
+        }
+
+        .fruit-note {
+            font-size: clamp(20px, 5vw, 32px);
+            background: #ffeed9;
+            padding: 12px 18px;
+            border-radius: 50px;
+            color: #5f4632;
+            border-left: 10px solid #f7b25c; /* right border becomes left for English */
+            margin: 15px 0;
+            word-break: break-word;
+        }
+
+        .fruit-note div {
+            font-size: clamp(32px, 8vw, 52px) !important;
+        }
+
+        .story-hint {
+            background: #fbebc5;
+            border-radius: 50px;
+            padding: 15px 18px;
+            text-align: center;
+            font-size: clamp(20px, 5vw, 32px);
+            margin-top: 20px;
+            border: 3px dashed #eb9f5e;
+            color: #2c492c;
+        }
+
+        .story-hint span {
+            font-weight: bold;
+            background: white;
+            padding: 4px 15px;
+            border-radius: 40px;
+            margin: 0 5px;
+            display: inline-block;
+        }
+
+        footer {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .reset-btn {
+            background: #ffc489;
+            border: none;
+            font-size: clamp(24px, 6vw, 32px);
+            padding: 12px 30px;
+            border-radius: 70px;
+            font-weight: bold;
+            color: #402d1b;
+            box-shadow: 0 6px 0 #b26b36;
+            cursor: pointer;
+            border: 2px solid #ffddb0;
+            width: auto;
+            max-width: 90%;
+        }
+        .reset-btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 2px 0 #b26b36;
+        }
+
+        @media (max-width: 360px) {
+            .fruit-group {
+                min-width: 130px;
+                padding: 15px 10px;
+            }
+            .fruit-icons {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- fixed navigation (English) -->
+    <div class="fixed-nav" id="fixedNav">
+        <button class="nav-arrow-fixed" id="prevBtn" :disabled="currentIndex === 0">←</button>
+        <div class="counter-badge-fixed" id="counterBadge">📚 1/20</div>
+        <button class="nav-arrow-fixed" id="nextBtn" :disabled="currentIndex === totalExamples-1">→</button>
+    </div>
+
+    <!-- main content -->
+    <div class="card" id="app">
+        <div v-if="currentExample">
+            <div class="operation-title">
+                {{ currentExample.type === 'add' ? '➕ ADD' : '➖ SUBTRACT' }}
+            </div>
+
+            <div class="fruit-equation">
+                {{ currentExample.num1 }} {{ currentExample.type === 'add' ? '+' : '−' }} {{ currentExample.num2 }} =
+                <span style="font-size: 0.9em; background: #ffe0b0; padding: 0 15px; border-radius: 40px; display: inline-block;">🤍</span>
+            </div>
+
+            <div class="fruits-container">
+                <!-- first group: apples -->
+                <div class="fruit-group">
+                    <div class="fruit-label">
+                        <span>🍎 Apples</span>
+                    </div>
+                    <div class="fruit-icons">
+                        <span v-for="i in currentExample.num1" :key="'a'+i">🍎</span>
+                    </div>
+                </div>
+
+                <div class="operator-symbol">
+                    {{ currentExample.type === 'add' ? '+' : '−' }}
+                </div>
+
+                <!-- second group: oranges (addition) / kids (subtraction) -->
+                <div class="fruit-group" v-if="currentExample.type === 'add'">
+                    <div class="fruit-label">
+                        <span>🍊 Oranges</span>
+                    </div>
+                    <div class="fruit-icons">
+                        <span v-for="i in currentExample.num2" :key="'o'+i">🍊</span>
+                    </div>
+                </div>
+
+                <div class="fruit-group" v-else>
+                    <div class="fruit-label">
+                        <span>🧒 Kids</span>
+                    </div>
+                    <div class="fruit-icons">
+                        <span v-for="i in currentExample.num2" :key="'c'+i">🧒</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- input area -->
+            <div class="result-area">
+                <span class="result-label">Result =</span>
+                <input type="number" class="result-input" v-model.number="userAnswer" @input="checkAnswer" placeholder="?" inputmode="numeric">
+                <span class="check-feedback" v-if="answerStatus === 'correct'">✅</span>
+                <span class="check-feedback" v-else-if="answerStatus === 'wrong'">❌</span>
+            </div>
+
+            <!-- combined fruits / remaining apples -->
+            <div class="fruit-note" v-if="currentExample.type === 'add'">
+                <span>🍎🍊 together</span>
+                <div style="font-size: 42px; margin-top: 8px;">
+                    <span v-for="i in currentExample.num1">🍎</span>
+                    <span v-for="i in currentExample.num2">🍊</span>
+                </div>
+            </div>
+
+            <div class="fruit-note" v-else>
+                <span>🍎 left</span>
+                <div style="font-size: 46px; margin-top: 8px;">
+                    <span v-for="i in (currentExample.num1 - currentExample.num2)" :key="'rem'+i">🍎</span>
+                    <span v-if="currentExample.num1 - currentExample.num2 === 0" style="font-size: 40px;">😮 zero</span>
+                </div>
+            </div>
+
+            <!-- story hint -->
+            <div class="story-hint" v-if="currentExample.type === 'sub'">
+                <span>📖</span> 
+                {{ currentExample.num1 }} apple{{ currentExample.num1>1?'s':'' }} – {{ currentExample.num2 }} kid{{ currentExample.num2>1?'s':'' }} = {{ currentExample.num1 - currentExample.num2 }}
+            </div>
+            <div class="story-hint" v-else>
+                <span>🍎🍊</span> {{ currentExample.num1 }} + {{ currentExample.num2 }} = {{ currentExample.num1 + currentExample.num2 }}
+            </div>
+        </div>
+
+        <footer>
+            <button class="reset-btn" @click="resetAnswer">✏️ Clear</button>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                currentIndex: 0,
+                examples: [],
+                userAnswer: null,
+                answerStatus: ''
+            },
+            computed: {
+                totalExamples() {
+                    return this.examples.length;
+                },
+                currentExample() {
+                    return this.examples[this.currentIndex] || null;
+                }
+            },
+            watch: {
+                currentIndex() {
+                    this.resetAnswer();
+                    this.updateFixedNav();
+                }
+            },
+            methods: {
+                generateExamples() {
+                    let addEx = [];
+                    let subEx = [];
+
+                    // 10 addition: num1>=1, num2>=1, num1+num2 <=10
+                    while (addEx.length < 10) {
+                        let a = Math.floor(Math.random() * 5) + 1;
+                        let b = Math.floor(Math.random() * (10 - a)) + 1;
+                        if (a + b <= 10 && a >= 1 && b >= 1) {
+                            addEx.push({ type: 'add', num1: a, num2: b });
+                        }
+                    }
+
+                    // 10 subtraction: num1>=2, num2>=1, num1-num2 >=0
+                    while (subEx.length < 10) {
+                        let a = Math.floor(Math.random() * 8) + 2;
+                        let b = Math.floor(Math.random() * a) + 1;
+                        if (a - b <= 10 && a - b >= 0 && a >= 1 && b >= 1) {
+                            subEx.push({ type: 'sub', num1: a, num2: b });
+                        }
+                    }
+
+                    let mixed = [];
+                    for (let i = 0; i < 10; i++) {
+                        mixed.push(addEx[i]);
+                        mixed.push(subEx[i]);
+                    }
+                    // shuffle lightly
+                    for (let i = mixed.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [mixed[i], mixed[j]] = [mixed[j], mixed[i]];
+                    }
+                    this.examples = mixed;
+                },
+
+                prevPage() {
+                    if (this.currentIndex > 0) {
+                        this.currentIndex--;
+                    }
+                },
+                nextPage() {
+                    if (this.currentIndex < this.totalExamples - 1) {
+                        this.currentIndex++;
+                    }
+                },
+                checkAnswer() {
+                    if (this.userAnswer === null || this.userAnswer === '') {
+                        this.answerStatus = '';
+                        return;
+                    }
+                    const ex = this.currentExample;
+                    const correct = ex.type === 'add' ? ex.num1 + ex.num2 : ex.num1 - ex.num2;
+                    if (this.userAnswer === correct) {
+                        this.answerStatus = 'correct';
+                    } else {
+                        this.answerStatus = 'wrong';
+                    }
+                },
+                resetAnswer() {
+                    this.userAnswer = null;
+                    this.answerStatus = '';
+                },
+                updateFixedNav() {
+                    const counterSpan = document.getElementById('counterBadge');
+                    if (counterSpan) {
+                        counterSpan.innerText = `📚 ${this.currentIndex+1}/${this.totalExamples}`;
+                    }
+                    const prevBtn = document.getElementById('prevBtn');
+                    const nextBtn = document.getElementById('nextBtn');
+                    if (prevBtn) prevBtn.disabled = this.currentIndex === 0;
+                    if (nextBtn) nextBtn.disabled = this.currentIndex === this.totalExamples - 1;
+                },
+                bindFixedNav() {
+                    const prevBtn = document.getElementById('prevBtn');
+                    const nextBtn = document.getElementById('nextBtn');
+                    if (prevBtn) prevBtn.addEventListener('click', () => this.prevPage());
+                    if (nextBtn) nextBtn.addEventListener('click', () => {
+                        if (this.currentIndex < this.totalExamples - 1) {
+                            this.currentIndex++;
+                        }
+                    });
+                    this.updateFixedNav();
+                }
+            },
+            created() {
+                this.generateExamples();
+            },
+            mounted() {
+                this.bindFixedNav();
+                this.$watch('currentIndex', () => this.updateFixedNav());
+                this.$watch('totalExamples', () => this.updateFixedNav());
+            }
+        });
+    </script>
+</body>
+</html>
+
+
