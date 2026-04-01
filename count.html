@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>تحدي الكرات - اسحب الكرة إلى الصندوق</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none; /* منع تحديد النص أثناء السحب */
+        }
+
+        body {
+            background: linear-gradient(145deg, #1e5a3a 0%, #0e3a22 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Tahoma', 'Cairo', system-ui, -apple-system, 'Roboto', sans-serif;
+            padding: 1.5rem;
+        }
+
+        /* الحاوية الرئيسية - مرنة لجميع الشاشات */
+        .game-container {
+            max-width: 1400px;
+            width: 100%;
+            background: rgba(255,248,225,0.2);
+            backdrop-filter: blur(3px);
+            border-radius: 5rem;
+            padding: 1.8rem;
+            box-shadow: 0 25px 45px rgba(0,0,0,0.3), inset 0 1px 2px rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+
+        /* تخطيط مرن: عمودي على الشاشات الصغيرة، أفقي على الكبيرة */
+        .main-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* منطقة الصندوق العملاق */
+        .box-area {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .giant-box {
+            background: #f7e9c3;
+            background-image: radial-gradient(circle at 25% 40%, rgba(255,215,130,0.3) 2%, transparent 2.5%),
+                              radial-gradient(circle at 70% 85%, rgba(210,150,75,0.2) 1.8%, transparent 2%);
+            background-size: 40px 40px, 35px 35px;
+            width: 100%;
+            max-width: 500px;
+            min-width: 260px;
+            aspect-ratio: 1 / 0.9;
+            border-radius: 48px;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.4), inset 0 2px 5px rgba(255,250,210,0.8), inset 0 -5px 0 #b97f3a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.2s ease;
+            border: 4px solid #e7b874;
+            cursor: grab;
+            position: relative;
+        }
+
+        .giant-box:active {
+            cursor: grabbing;
+        }
+
+        /* العدد الكبير داخل الصندوق */
+        .box-count {
+            font-size: 8rem;
+            font-weight: 900;
+            color: #3b2a1f;
+            text-shadow: 6px 6px 0 rgba(255,215,130,0.8);
+            background: rgba(255,245,200,0.6);
+            padding: 0.2rem 1.2rem;
+            border-radius: 80px;
+            font-family: monospace;
+            letter-spacing: 8px;
+            backdrop-filter: blur(4px);
+        }
+
+        .box-label {
+            font-size: 1.4rem;
+            font-weight: bold;
+            background: #2c1a0e;
+            color: #ffecb3;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            margin-top: 0.5rem;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* منطقة الكرات - شبكة مرنة */
+        .balls-area {
+            width: 100%;
+            background: rgba(0,0,0,0.25);
+            border-radius: 4rem;
+            padding: 1.5rem 1rem;
+            backdrop-filter: blur(8px);
+        }
+
+        .balls-title {
+            text-align: center;
+            color: #fff3cf;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 1.2rem;
+            text-shadow: 2px 2px 0 #5a3e2a;
+        }
+
+        .balls-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 0 auto;
+        }
+
+        /* تصميم الكرة - بدون أرقام */
+        .ball {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle at 35% 35%, #ffdf7e, #f0a500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0; /* إخفاء أي نص */
+            color: transparent;
+            box-shadow: 0 12px 18px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,200,0.9);
+            cursor: grab;
+            transition: 0.1s linear;
+            border: 2px solid #ffcf6e;
+        }
+        
+        /* إضافة تأثير داخلي جميل للكرة بدون أرقام */
+        .ball::before {
+            content: "⚽";
+            font-size: 2.2rem;
+            color: #4a2a0a;
+            text-shadow: 1px 1px 0 rgba(255,215,0,0.8);
+            opacity: 0.7;
+        }
+
+        .ball:active {
+            cursor: grabbing;
+            transform: scale(0.96);
+            filter: brightness(0.96);
+        }
+
+        .ball.dragging {
+            opacity: 0.6;
+            transform: scale(0.92);
+            cursor: grabbing;
+        }
+
+        /* حالة السحب المسموح بها */
+        .giant-box.drag-over {
+            background: #fff0cf;
+            box-shadow: 0 0 0 5px #ffd966, inset 0 0 0 3px #ffb347;
+            transform: scale(1.02);
+            border-color: #ffb347;
+        }
+
+        /* رسالة التهنئة الصغيرة */
+        .message-area {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #fff3bf;
+            background: #2c472e;
+            display: inline-block;
+            width: auto;
+            padding: 0.5rem 1.2rem;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+        }
+
+        .reset-btn {
+            background: #ffbe5e;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 0.5rem 1.8rem;
+            border-radius: 3rem;
+            color: #2d2418;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 0.8rem;
+            font-family: inherit;
+            box-shadow: 0 5px 0 #a05e1a;
+        }
+
+        .reset-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #a05e1a;
+        }
+
+        /* تحسينات للشاشات الصغيرة */
+        @media (max-width: 700px) {
+            .ball {
+                width: 65px;
+                height: 65px;
+            }
+            .ball::before {
+                font-size: 1.8rem;
+            }
+            .box-count {
+                font-size: 4.5rem;
+                letter-spacing: 4px;
+            }
+            .giant-box {
+                max-width: 350px;
+            }
+            .balls-grid {
+                gap: 0.7rem;
+            }
+            .game-container {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .ball {
+                width: 55px;
+                height: 55px;
+            }
+            .ball::before {
+                font-size: 1.5rem;
+            }
+            .box-count {
+                font-size: 3.5rem;
+            }
+            .box-label {
+                font-size: 1rem;
+            }
+        }
+
+        /* للأجهزة اللمسية: تحسين السحب */
+        @media (hover: none) and (pointer: coarse) {
+            .ball {
+                touch-action: manipulation;
+            }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 1.2rem;
+            font-size: 0.75rem;
+            color: #ebd5a3;
+        }
+        
+        /* رسالة عند عدم وجود كرات */
+        .empty-message {
+            background: #f5c48a;
+            color: #382812;
+            padding: 1rem 1.5rem;
+            border-radius: 60px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <div class="main-layout">
+        <!-- منطقة الصندوق الكبير -->
+        <div class="box-area">
+            <div class="giant-box" id="giantBox" data-count="0">
+                <div class="box-count" id="boxCountDisplay">0</div>
+                <div class="box-label">📦 الصندوق السحري</div>
+            </div>
+        </div>
+
+        <!-- منطقة الكرات -->
+        <div class="balls-area">
+            <div class="balls-title">
+                🏀 اسحب الكرة وضعها في الصندوق 🧺
+            </div>
+            <div class="balls-grid" id="ballsGrid"></div>
+            <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+                <div class="message-area" id="statusMsg">✨ اسحب أي كرة إلى الصندوق ✨</div>
+                <button class="reset-btn" id="resetBtn">🔄 إعادة تعيين الكرات</button>
+            </div>
+        </div>
+    </div>
+    <footer>💡 أمسك الكرة واسحبها داخل الصندوق — سيزداد العدد تلقائياً</footer>
+</div>
+
+<script>
+    // إعداد الحالة
+    let ballsData = [];     // مصفوفة لتخزين معرفات الكرات وحالة وجودها (موجودة/مستخدمة)
+    let currentCount = 0;   // عدد الكرات داخل الصندوق
+    const TOTAL_BALLS = 20;
+
+    // عناصر DOM
+    const giantBox = document.getElementById('giantBox');
+    const boxCountDisplay = document.getElementById('boxCountDisplay');
+    const ballsGrid = document.getElementById('ballsGrid');
+    const statusMsg = document.getElementById('statusMsg');
+    const resetBtn = document.getElementById('resetBtn');
+
+    // تحديث عرض العدد داخل الصندوق
+    function updateBoxDisplay() {
+        boxCountDisplay.innerText = currentCount;
+        // تأثير إضافي: تغيير لون الخلفية أو حجم الخط حسب العدد (اختياري جمالي)
+        if (currentCount === TOTAL_BALLS) {
+            statusMsg.innerHTML = '🎉 مبروك! أكملت كل الكرات! 🎉';
+            statusMsg.style.background = "#d4a373";
+            statusMsg.style.color = "#2d1f0c";
+        } else {
+            statusMsg.innerHTML = `✅ العدد داخل الصندوق: ${currentCount} من ${TOTAL_BALLS}`;
+            statusMsg.style.background = "#2c472e";
+            statusMsg.style.color = "#fff3bf";
+        }
+    }
+
+    // إعادة بناء واجهة الكرات بناءً على ballsData (الكرات المتبقية)
+    function renderBalls() {
+        ballsGrid.innerHTML = '';
+        // تصفية الكرات التي لم توضع بعد (active = true)
+        const activeBalls = ballsData.filter(ball => ball.active === true);
+        
+        if (activeBalls.length === 0 && currentCount === TOTAL_BALLS) {
+            // كل الكرات داخل الصندوق
+            const emptyMsg = document.createElement('div');
+            emptyMsg.className = 'empty-message';
+            emptyMsg.innerText = "🎯 كل الكرات أصبحت داخل الصندوق! 🎯";
+            ballsGrid.appendChild(emptyMsg);
+            return;
+        }
+        
+        // إنشاء عناصر الكرات المتبقية (بدون أرقام)
+        activeBalls.forEach((ball) => {
+            const ballElement = document.createElement('div');
+            ballElement.className = 'ball';
+            // إخفاء أي نص داخلي - الكرة نظيفة بدون أرقام
+            ballElement.setAttribute('data-ball-id', ball.id);
+            ballElement.setAttribute('draggable', 'true');
+            ballElement.setAttribute('aria-label', 'كرة');
+            
+            // أحداث السحب (Drag and Drop)
+            ballElement.addEventListener('dragstart', handleDragStart);
+            ballElement.addEventListener('dragend', handleDragEnd);
+            
+            // دعم اللمس (touch) للأجهزة المحمولة
+            ballElement.addEventListener('touchstart', handleTouchStart, { passive: false });
+            ballElement.addEventListener('touchmove', handleTouchMove, { passive: false });
+            ballElement.addEventListener('touchend', handleTouchEnd);
+            
+            ballsGrid.appendChild(ballElement);
+        });
+    }
+
+    // متغيرات لتخزين عنصر الكرة المسحوبة في حالة اللمس
+    let draggedBallElement = null;
+    let dragBallId = null;
+
+    // ---- أحداث Drag and Drop العادية (للماوس) ----
+    function handleDragStart(e) {
+        const ball = e.target.closest('.ball');
+        if (!ball) {
+            e.preventDefault();
+            return false;
+        }
+        const ballId = parseInt(ball.getAttribute('data-ball-id'));
+        // التحقق من أن الكرة لا زالت نشطة (موجودة في الـ UI وغير موضوعة سابقاً)
+        const ballData = ballsData.find(b => b.id === ballId);
+        if (!ballData || !ballData.active) {
+            e.preventDefault();
+            return false;
+        }
+        e.dataTransfer.setData('text/plain', ballId);
+        e.dataTransfer.effectAllowed = 'move';
+        // إضافة كلاس التأثير
+        ball.classList.add('dragging');
+        draggedBallElement = ball;
+        dragBallId = ballId;
+    }
+
+    function handleDragEnd(e) {
+        if (draggedBallElement) {
+            draggedBallElement.classList.remove('dragging');
+        }
+        draggedBallElement = null;
+        dragBallId = null;
+        // إزالة تأثير الصندوق
+        giantBox.classList.remove('drag-over');
+    }
+
+    // السحب فوق الصندوق
+    function handleDragOver(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        giantBox.classList.add('drag-over');
+    }
+
+    function handleDragLeave(e) {
+        giantBox.classList.remove('drag-over');
+    }
+
+    // إسقاط الكرة داخل الصندوق
+    function handleDrop(e) {
+        e.preventDefault();
+        giantBox.classList.remove('drag-over');
+        
+        let ballId = null;
+        // محاولة الحصول على المعرف من dataTransfer
+        if (e.dataTransfer && e.dataTransfer.getData('text/plain')) {
+            ballId = parseInt(e.dataTransfer.getData('text/plain'));
+        } else if (dragBallId !== null) {
+            ballId = dragBallId;
+        }
+        
+        if (!ballId) return false;
+        
+        // البحث عن الكرة في البيانات
+        const ballIndex = ballsData.findIndex(b => b.id === ballId);
+        if (ballIndex === -1) return;
+        const ball = ballsData[ballIndex];
+        if (!ball.active) {
+            // تم وضع الكرة سابقاً
+            statusMsg.innerHTML = '⚠️ هذه الكرة موجودة بالفعل في الصندوق! ⚠️';
+            setTimeout(() => {
+                if(currentCount !== TOTAL_BALLS) 
+                    statusMsg.innerHTML = `✅ العدد داخل الصندوق: ${currentCount} من ${TOTAL_BALLS}`;
+                else statusMsg.innerHTML = '🎉 مبروك! أكملت كل الكرات! 🎉';
+            }, 1200);
+            return;
+        }
+        
+        // تنفيذ عملية إضافة الكرة إلى الصندوق
+        addBallToBox(ball.id);
+        
+        // مسح المتغيرات المساعدة
+        if (draggedBallElement) {
+            draggedBallElement.classList.remove('dragging');
+            draggedBallElement = null;
+        }
+        dragBallId = null;
+        return true;
+    }
+    
+    // دالة إضافة الكرة إلى الصندوق (تحديث العدد، إلغاء تنشيط الكرة، إعادة التصيير)
+    function addBallToBox(ballId) {
+        const ballData = ballsData.find(b => b.id === ballId);
+        if (!ballData || !ballData.active) return false;
+        
+        // تعطيل الكرة
+        ballData.active = false;
+        // زيادة العدد
+        currentCount++;
+        updateBoxDisplay();
+        // إعادة بناء واجهة الكرات (حذف الكرة المستخدمة)
+        renderBalls();
+        
+        // إضافة تأثير اهتزاز بسيط للموبايل
+        if (window.navigator && window.navigator.vibrate) {
+            window.navigator.vibrate(50);
+        }
+        
+        // إذا اكتمل العدد
+        if (currentCount === TOTAL_BALLS) {
+            statusMsg.innerHTML = '🎉 تهانينا! لقد ملأت الصندوق بكل الكرات! 🎉';
+            setTimeout(() => {
+                if(currentCount === TOTAL_BALLS)
+                    statusMsg.innerHTML = '🏆 إنجاز رائع! اضغط إعادة تعيين للعب مجدداً 🏆';
+            }, 2500);
+        } else {
+            statusMsg.innerHTML = `✔️ تم وضع كرة في الصندوق! العدد الآن ${currentCount}`;
+            setTimeout(() => {
+                if(currentCount !== TOTAL_BALLS)
+                    statusMsg.innerHTML = `✅ العدد داخل الصندوق: ${currentCount} من ${TOTAL_BALLS}`;
+            }, 1500);
+        }
+        
+        return true;
+    }
+    
+    // ----- دعم اللمس (Touch Events) لمحاكاة السحب بشكل كامل -----
+    let touchTargetBall = null;
+    let touchStartX = 0, touchStartY = 0;
+    let isDraggingTouch = false;
+    
+    function handleTouchStart(e) {
+        const ball = e.target.closest('.ball');
+        if (!ball) return;
+        e.preventDefault();
+        const ballIdAttr = ball.getAttribute('data-ball-id');
+        if (!ballIdAttr) return;
+        const ballIdNum = parseInt(ballIdAttr);
+        const ballData = ballsData.find(b => b.id === ballIdNum);
+        if (!ballData || !ballData.active) return;
+        
+        touchTargetBall = ball;
+        dragBallId = ballIdNum;
+        const touch = e.touches[0];
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+        isDraggingTouch = true;
+        ball.classList.add('dragging');
+        
+        // منع التمرير أثناء السحب
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function handleTouchMove(e) {
+        if (!isDraggingTouch || !touchTargetBall) return;
+        e.preventDefault();
+        const touch = e.touches[0];
+        const currentX = touch.clientX;
+        const currentY = touch.clientY;
+        // نحدد موقع الصندوق لتفعيل التأثير البصري
+        const boxRect = giantBox.getBoundingClientRect();
+        if (currentX >= boxRect.left && currentX <= boxRect.right && currentY >= boxRect.top && currentY <= boxRect.bottom) {
+            giantBox.classList.add('drag-over');
+        } else {
+            giantBox.classList.remove('drag-over');
+        }
+    }
+    
+    function handleTouchEnd(e) {
+        if (!isDraggingTouch || !touchTargetBall) {
+            if(touchTargetBall) touchTargetBall.classList.remove('dragging');
+            document.body.style.overflow = '';
+            isDraggingTouch = false;
+            touchTargetBall = null;
+            giantBox.classList.remove('drag-over');
+            return;
+        }
+        e.preventDefault();
+        // فحص إذا كان الإصبع فوق الصندوق عند إنهاء اللمس
+        const touch = e.changedTouches[0];
+        if (touch) {
+            const elementsAtCursor = document.elementsFromPoint(touch.clientX, touch.clientY);
+            const isOverBox = elementsAtCursor.some(el => el === giantBox || giantBox.contains(el));
+            if (isOverBox && dragBallId !== null) {
+                // محاولة إضافة الكرة
+                const ballData = ballsData.find(b => b.id === dragBallId);
+                if (ballData && ballData.active) {
+                    addBallToBox(dragBallId);
+                } else {
+                    statusMsg.innerHTML = '⚠️ الكرة غير متاحة حالياً ⚠️';
+                    setTimeout(() => {
+                        if(currentCount !== TOTAL_BALLS) statusMsg.innerHTML = `✅ العدد داخل الصندوق: ${currentCount} من ${TOTAL_BALLS}`;
+                    }, 1000);
+                }
+            } else {
+                // إذا لم تنتهِ فوق الصندوق لا يحدث شيء
+                if(dragBallId) {
+                    statusMsg.innerHTML = '💡 اسحب الكرة داخل حدود الصندوق وأفلتها! 💡';
+                    setTimeout(() => {
+                        if(currentCount !== TOTAL_BALLS) statusMsg.innerHTML = `✅ العدد داخل الصندوق: ${currentCount} من ${TOTAL_BALLS}`;
+                        else statusMsg.innerHTML = '🎉 مبروك! أكملت كل الكرات! 🎉';
+                    }, 1000);
+                }
+            }
+        }
+        
+        // إعادة تعيين حالة اللمس
+        if (touchTargetBall) touchTargetBall.classList.remove('dragging');
+        touchTargetBall = null;
+        isDraggingTouch = false;
+        dragBallId = null;
+        giantBox.classList.remove('drag-over');
+        document.body.style.overflow = '';
+    }
+    
+    // دالة إعادة ضبط اللعبة بالكامل
+    function resetGame() {
+        // إعادة بناء مصفوفة الكرات: 20 كرة نشطة
+        ballsData = [];
+        for (let i = 1; i <= TOTAL_BALLS; i++) {
+            ballsData.push({ id: i, active: true });
+        }
+        currentCount = 0;
+        updateBoxDisplay();
+        renderBalls();
+        statusMsg.innerHTML = `✨ تم إعادة التعيين! اسحب الكرات إلى الصندوق ✨`;
+        statusMsg.style.background = "#2c472e";
+        setTimeout(() => {
+            if(currentCount !== TOTAL_BALLS) statusMsg.innerHTML = `✅ العدد داخل الصندوق: 0 من ${TOTAL_BALLS}`;
+        }, 1800);
+        // إزالة أي تأثيرات متبقية
+        giantBox.classList.remove('drag-over');
+        // إذا كان هناك سحب لمسي ملغي
+        if (touchTargetBall) {
+            touchTargetBall.classList.remove('dragging');
+            touchTargetBall = null;
+        }
+        isDraggingTouch = false;
+        dragBallId = null;
+        document.body.style.overflow = '';
+    }
+    
+    // تجهيز أحداث الصندوق للسحب والإفلات
+    function setupBoxEvents() {
+        giantBox.addEventListener('dragover', handleDragOver);
+        giantBox.addEventListener('dragleave', handleDragLeave);
+        giantBox.addEventListener('drop', handleDrop);
+        // منع السلوك الافتراضي للصندوق في اللمس
+        giantBox.addEventListener('touchmove', (e) => {
+            if (isDraggingTouch) e.preventDefault();
+        });
+    }
+    
+    // تهيئة اللعبة
+    function init() {
+        resetGame(); // يبني الكرات ويضبط العدد
+        setupBoxEvents();
+        resetBtn.addEventListener('click', () => {
+            resetGame();
+        });
+        // منع السحب الافتراضي للصور والعناصر الأخرى
+        window.addEventListener('dragstart', (e) => {
+            if (!e.target.closest('.ball')) {
+                e.preventDefault();
+            }
+        });
+    }
+    
+    init();
+</script>
+</body>
+</html>
