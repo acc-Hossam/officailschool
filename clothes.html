@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>كروت تعليمية - تعلم النطق بالعربية والإنجليزية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2d3748, #1a202c);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: clamp(1.5rem, 5vw, 2.2rem);
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: clamp(0.85rem, 3vw, 1rem);
+            opacity: 0.9;
+        }
+
+        /* أزرار التصفية */
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px;
+            background: #f7fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: clamp(0.85rem, 3vw, 1rem);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            color: #4a5568;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn:hover:not(.active) {
+            transform: translateY(-2px);
+            background: #edf2f7;
+        }
+
+        /* أدوات التدريب */
+        .training-tools {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            padding: 20px;
+            margin: 20px;
+            border-radius: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .tool-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            color: #2d3748;
+        }
+
+        .tool-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+        .quiz-btn {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+        }
+
+        .random-btn {
+            background: linear-gradient(135deg, #ed8936, #dd6b20);
+            color: white;
+        }
+
+        .favorite-btn {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+            color: white;
+        }
+
+        /* شبكة الكروت */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 25px;
+        }
+
+        /* تصميم الكارت */
+        .card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            border: 2px solid #e2e8f0;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            border-color: #667eea;
+        }
+
+        .card.favorite {
+            border: 3px solid #f56565;
+            background: linear-gradient(135deg, #fff5f5, white);
+        }
+
+        .favorite-star {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 1.8rem;
+            color: #fbbf24;
+            cursor: pointer;
+            z-index: 10;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .favorite-star:hover {
+            transform: scale(1.1);
+        }
+
+        .card-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 25px;
+            text-align: center;
+            font-size: 3.5rem;
+        }
+
+        .card-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .english-word {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 8px;
+            direction: ltr;
+        }
+
+        .arabic-word {
+            font-size: 1.4rem;
+            color: #4a5568;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .pronounce-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .pronounce-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .en-btn {
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+            color: white;
+        }
+
+        .ar-btn {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+        }
+
+        .pronounce-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* وضع الاختبار */
+        .quiz-mode {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .quiz-question {
+            font-size: 2rem;
+            margin: 20px 0;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .quiz-option {
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.1rem;
+        }
+
+        .quiz-option:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.02);
+        }
+
+        .quiz-option.correct {
+            background: #48bb78;
+            color: white;
+            border-color: #38a169;
+        }
+
+        .quiz-option.wrong {
+            background: #f56565;
+            color: white;
+            border-color: #e53e3e;
+        }
+
+        .close-quiz {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #718096;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* مؤشرات التقدم */
+        .progress-indicator {
+            background: #edf2f7;
+            margin: 0 25px 20px 25px;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #cbd5e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* رسائل التغذية الراجعة */
+        .feedback-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #48bb78;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cards-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+                padding: 15px;
+            }
+
+            .english-word {
+                font-size: 1.3rem;
+            }
+
+            .arabic-word {
+                font-size: 1.2rem;
+            }
+
+            .card-icon {
+                font-size: 2.8rem;
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pronounce-buttons {
+                flex-direction: column;
+            }
+
+            .training-tools {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 كروت تعليمية تفاعلية 🎤</h1>
+            <p>تعلم النطق بالعربية والإنجليزية | اضغط على الكارت أو الأزرار لسماع النطق</p>
+        </div>
+
+        <div class="filter-buttons" id="filterButtons">
+            <button class="filter-btn active" data-category="all">الكل</button>
+            <button class="filter-btn" data-category="clothes">ملابس</button>
+            <button class="filter-btn" data-category="food">طعام ومواد</button>
+            <button class="filter-btn" data-category="toys">ألعاب وفواكه</button>
+            <button class="filter-btn" data-category="actions">أفعال واحتياجات</button>
+        </div>
+
+        <div class="training-tools">
+            <button class="tool-btn quiz-btn" id="quizBtn">📝 اختبار سريع</button>
+            <button class="tool-btn random-btn" id="randomPracticeBtn">🎲 تدريب عشوائي</button>
+            <button class="tool-btn favorite-btn" id="showFavoritesBtn">⭐ المفضلة</button>
+            <button class="tool-btn" id="speakAllBtn">🔊 نطق كل الكلمات</button>
+        </div>
+
+        <div class="progress-indicator" id="progressIndicator">
+            <div>تقدم التعلم: <span id="learnedCount">0</span> / <span id="totalCount">0</span> كلمة</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div class="cards-grid" id="cardsGrid"></div>
+    </div>
+
+    <div class="quiz-mode" id="quizMode">
+        <div class="quiz-container">
+            <h2>📝 اختبار سريع</h2>
+            <div class="quiz-question" id="quizQuestion"></div>
+            <div class="quiz-options" id="quizOptions"></div>
+            <div id="quizResult" style="margin: 15px 0; font-weight: bold;"></div>
+            <button class="close-quiz" id="closeQuizBtn">إغلاق</button>
+        </div>
+    </div>
+
+    <div class="feedback-message" id="feedbackMessage"></div>
+
+    <script>
+        // بيانات الكلمات
+        const wordsData = [
+            // ملابس
+            { english: "Clothes", arabic: "ملابس", icon: "👕", category: "clothes", learned: false, favorite: false },
+            { english: "Cap", arabic: "كاب", icon: "🧢", category: "clothes", learned: false, favorite: false },
+            { english: "Jacket", arabic: "جاكيت", icon: "🧥", category: "clothes", learned: false, favorite: false },
+            { english: "Shorts", arabic: "شورت", icon: "🩳", category: "clothes", learned: false, favorite: false },
+            { english: "Skirt", arabic: "جيبة", icon: "👗", category: "clothes", learned: false, favorite: false },
+            { english: "Sweater", arabic: "بلوفر", icon: "🧶", category: "clothes", learned: false, favorite: false },
+            { english: "T-shirt", arabic: "تيشرت", icon: "👕", category: "clothes", learned: false, favorite: false },
+            
+            // طعام ومواد
+            { english: "Toothpaste", arabic: "معجون أسنان", icon: "🪥", category: "food", learned: false, favorite: false },
+            { english: "Lollipop", arabic: "مصاصة", icon: "🍭", category: "food", learned: false, favorite: false },
+            { english: "Water", arabic: "مياه", icon: "💧", category: "food", learned: false, favorite: false },
+            { english: "Food", arabic: "طعام", icon: "🍲", category: "food", learned: false, favorite: false },
+            
+            // ألعاب وفواكه وخضروات
+            { english: "Toys", arabic: "ألعاب", icon: "🧸", category: "toys", learned: false, favorite: false },
+            { english: "Fruits", arabic: "فواكه", icon: "🍎", category: "toys", learned: false, favorite: false },
+            { english: "Vegetables", arabic: "خضروات", icon: "🥕", category: "toys", learned: false, favorite: false },
+            
+            // أفعال واحتياجات
+            { english: "Want", arabic: "يريد", icon: "💭", category: "actions", learned: false, favorite: false },
+            { english: "Need", arabic: "يحتاج", icon: "❗", category: "actions", learned: false, favorite: false }
+        ];
+
+        let currentCategory = "all";
+        let showOnlyFavorites = false;
+        let quizQuestions = [];
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+
+        // دالة النطق
+        function speakText(text, lang) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang;
+                utterance.rate = 0.85;
+                utterance.pitch = 1;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                showMessage("متصفحك لا يدعم خاصية النطق", "error");
+            }
+        }
+
+        // عرض رسالة
+        function showMessage(msg, type = "success") {
+            const messageDiv = document.getElementById('feedbackMessage');
+            messageDiv.textContent = msg;
+            messageDiv.style.backgroundColor = type === "success" ? "#48bb78" : "#f56565";
+            messageDiv.style.display = "block";
+            setTimeout(() => {
+                messageDiv.style.display = "none";
+            }, 2000);
+        }
+
+        // تحديث التقدم
+        function updateProgress() {
+            const learned = wordsData.filter(w => w.learned).length;
+            const total = wordsData.length;
+            document.getElementById('learnedCount').textContent = learned;
+            document.getElementById('totalCount').textContent = total;
+            const percentage = (learned / total) * 100;
+            document.getElementById('progressFill').style.width = `${percentage}%`;
+        }
+
+        // تسجيل تعلم الكلمة
+        function markAsLearned(wordId, learned) {
+            wordsData[wordId].learned = learned;
+            updateProgress();
+            if (learned) {
+                showMessage(`🎉 أحسنت! تم حفظ كلمة ${wordsData[wordId].english} 🎉`);
+            }
+        }
+
+        // تبديل المفضلة
+        function toggleFavorite(wordId) {
+            wordsData[wordId].favorite = !wordsData[wordId].favorite;
+            renderCards();
+            showMessage(wordsData[wordId].favorite ? "⭐ أضيفت إلى المفضلة" : "❌ أزيلت من المفضلة");
+        }
+
+        // عرض الكروت
+        function renderCards() {
+            const grid = document.getElementById('cardsGrid');
+            let filteredWords = wordsData;
+            
+            if (showOnlyFavorites) {
+                filteredWords = filteredWords.filter(w => w.favorite);
+            } else if (currentCategory !== "all") {
+                filteredWords = filteredWords.filter(w => w.category === currentCategory);
+            }
+            
+            grid.innerHTML = filteredWords.map((word, idx) => {
+                const originalIndex = wordsData.findIndex(w => w === word);
+                return `
+                    <div class="card ${word.favorite ? 'favorite' : ''}" data-word-id="${originalIndex}">
+                        <div class="favorite-star" onclick="event.stopPropagation(); toggleFavorite(${originalIndex})">
+                            ${word.favorite ? '⭐' : '☆'}
+                        </div>
+                        <div class="card-icon">${word.icon}</div>
+                        <div class="card-content">
+                            <div class="english-word">${word.english}</div>
+                            <div class="arabic-word">${word.arabic}</div>
+                            <div class="pronounce-buttons">
+                                <button class="pronounce-btn en-btn" onclick="event.stopPropagation(); speakText('${word.english}', 'en-US')">
+                                    🇬🇧 English
+                                </button>
+                                <button class="pronounce-btn ar-btn" onclick="event.stopPropagation(); speakText('${word.arabic}', 'ar-SA')">
+                                    🇸🇪 عربي
+                                </button>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <label style="font-size: 0.85rem; cursor: pointer;">
+                                    <input type="checkbox" ${word.learned ? 'checked' : ''} 
+                                           onclick="event.stopPropagation(); markAsLearned(${originalIndex}, this.checked)">
+                                    ✓ حفظت الكلمة
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // إضافة حدث النقر على الكارت
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if (!e.target.closest('.pronounce-btn') && !e.target.closest('.favorite-star') && e.target.type !== 'checkbox') {
+                        const wordId = card.getAttribute('data-word-id');
+                        const word = wordsData[wordId];
+                        // نطق الكلمة بالانجليزية ثم العربية تلقائياً
+                        speakText(word.english, 'en-US');
+                        setTimeout(() => {
+                            speakText(word.arabic, 'ar-SA');
+                        }, 1000);
+                    }
+                });
+            });
+        }
+
+        // تدريب عشوائي
+        function randomPractice() {
+            const randomWord = wordsData[Math.floor(Math.random() * wordsData.length)];
+            showMessage(`🎲 كلمة عشوائية: ${randomWord.english} - ${randomWord.arabic}`);
+            speakText(randomWord.english, 'en-US');
+            setTimeout(() => {
+                speakText(randomWord.arabic, 'ar-SA');
+            }, 1000);
+        }
+
+        // نطق كل الكلمات
+        function speakAllWords() {
+            let index = 0;
+            function speakNext() {
+                if (index < wordsData.length) {
+                    const word = wordsData[index];
+                    speakText(word.english, 'en-US');
+                    setTimeout(() => {
+                        speakText(word.arabic, 'ar-SA');
+                        index++;
+                        setTimeout(speakNext, 1500);
+                    }, 1000);
+                } else {
+                    showMessage("✅ تم نطق جميع الكلمات!");
+                }
+            }
+            speakNext();
+        }
+
+        // بدء الاختبار
+        function startQuiz() {
+            // اختيار 10 كلمات عشوائية للاختبار
+            const shuffled = [...wordsData];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            quizQuestions = shuffled.slice(0, 10);
+            currentQuizIndex = 0;
+            quizScore = 0;
+            showQuizQuestion();
+            document.getElementById('quizMode').style.display = 'flex';
+        }
+
+        function showQuizQuestion() {
+            if (currentQuizIndex >= quizQuestions.length) {
+                endQuiz();
+                return;
+            }
+            
+            const question = quizQuestions[currentQuizIndex];
+            const isEnglishToArabic = Math.random() > 0.5;
+            
+            let questionText, correctAnswer, options;
+            if (isEnglishToArabic) {
+                questionText = `ماذا تعني كلمة "${question.english}"؟`;
+                correctAnswer = question.arabic;
+                // اختيار 3 إجابات عشوائية أخرى
+                const otherAnswers = wordsData.filter(w => w !== question).map(w => w.arabic);
+                const shuffledOthers = [...otherAnswers].sort(() => 0.5 - Math.random());
+                options = [correctAnswer, ...shuffledOthers.slice(0, 3)];
+            } else {
+                questionText = `ما هي ترجمة "${question.arabic}" إلى الإنجليزية؟`;
+                correctAnswer = question.english;
+                const otherAnswers = wordsData.filter(w => w !== question).map(w => w.english);
+                const shuffledOthers = [...otherAnswers].sort(() => 0.5 - Math.random());
+                options = [correctAnswer, ...shuffledOthers.slice(0, 3)];
+            }
+            
+            // خلط الخيارات
+            for (let i = options.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [options[i], options[j]] = [options[j], options[i]];
+            }
+            
+            document.getElementById('quizQuestion').textContent = questionText;
+            const optionsDiv = document.getElementById('quizOptions');
+            optionsDiv.innerHTML = options.map(opt => `
+                <div class="quiz-option" onclick="checkAnswer('${opt.replace(/'/g, "\\'")}', '${correctAnswer.replace(/'/g, "\\'")}')">
+                    ${opt}
+                </div>
+            `).join('');
+            document.getElementById('quizResult').innerHTML = `السؤال ${currentQuizIndex + 1} من ${quizQuestions.length}`;
+        }
+        
+        function checkAnswer(selected, correct) {
+            if (selected === correct) {
+                quizScore++;
+                showMessage("✅ إجابة صحيحة!");
+                document.getElementById('quizResult').innerHTML = `✅ صحيح! +1 نقطة<br>السؤال ${currentQuizIndex + 1} من ${quizQuestions.length}`;
+                // تسجيل تعلم الكلمة
+                const currentWord = quizQuestions[currentQuizIndex];
+                const wordIndex = wordsData.findIndex(w => w === currentWord);
+                if (!wordsData[wordIndex].learned) {
+                    markAsLearned(wordIndex, true);
+                }
+            } else {
+                showMessage(`❌ خطأ! الإجابة الصحيحة: ${correct}`);
+                document.getElementById('quizResult').innerHTML = `❌ خطأ! الإجابة الصحيحة: ${correct}<br>السؤال ${currentQuizIndex + 1} من ${quizQuestions.length}`;
+            }
+            
+            setTimeout(() => {
+                currentQuizIndex++;
+                showQuizQuestion();
+            }, 1500);
+        }
+        
+        function endQuiz() {
+            const percentage = (quizScore / quizQuestions.length) * 100;
+            let message = `🎉 انتهى الاختبار! 🎉<br>نتيجتك: ${quizScore} من ${quizQuestions.length} (${percentage}%)`;
+            if (percentage === 100) {
+                message += "<br>🏆 ممتاز! إتقان كامل! 🏆";
+            } else if (percentage >= 70) {
+                message += "<br>👍 جيد جداً! واصل التدريب!";
+            } else {
+                message += "<br>💪 لا بأس! تدرب أكثر وستتحسن!";
+            }
+            document.getElementById('quizResult').innerHTML = message;
+            document.getElementById('quizOptions').innerHTML = '<div style="text-align: center;">🎯 انتهى الاختبار</div>';
+            setTimeout(() => {
+                document.getElementById('closeQuizBtn').style.display = 'block';
+            }, 2000);
+        }
+        
+        // إغلاق الاختبار
+        document.getElementById('closeQuizBtn').addEventListener('click', () => {
+            document.getElementById('quizMode').style.display = 'none';
+        });
+        
+        // دالة للعالمية
+        window.toggleFavorite = toggleFavorite;
+        window.markAsLearned = markAsLearned;
+        window.checkAnswer = checkAnswer;
+        window.speakText = speakText;
+        
+        // إعداد الأزرار
+        document.getElementById('quizBtn').addEventListener('click', startQuiz);
+        document.getElementById('randomPracticeBtn').addEventListener('click', randomPractice);
+        document.getElementById('speakAllBtn').addEventListener('click', speakAllWords);
+        document.getElementById('showFavoritesBtn').addEventListener('click', () => {
+            showOnlyFavorites = !showOnlyFavorites;
+            renderCards();
+            document.getElementById('showFavoritesBtn').style.background = showOnlyFavorites ? 
+                "linear-gradient(135deg, #fbbf24, #f59e0b)" : "linear-gradient(135deg, #f56565, #e53e3e)";
+            showMessage(showOnlyFavorites ? "⭐ عرض المفضلة فقط" : "📚 عرض جميع الكلمات");
+        });
+        
+        // أزرار التصفية
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCategory = btn.getAttribute('data-category');
+                showOnlyFavorites = false;
+                document.getElementById('showFavoritesBtn').style.background = "linear-gradient(135deg, #f56565, #e53e3e)";
+                renderCards();
+            });
+        });
+        
+        // بدء التشغيل
+        renderCards();
+        updateProgress();
+        
+        // حفظ تقدم الطالب في localStorage
+        function saveProgress() {
+            const progressData = wordsData.map(w => ({ learned: w.learned, favorite: w.favorite }));
+            localStorage.setItem('vocabularyProgress', JSON.stringify(progressData));
+        }
+        
+        function loadProgress() {
+            const saved = localStorage.getItem('vocabularyProgress');
+            if (saved) {
+                const progressData = JSON.parse(saved);
+                progressData.forEach((data, idx) => {
+                    if (data) {
+                        wordsData[idx].learned = data.learned || false;
+                        wordsData[idx].favorite = data.favorite || false;
+                    }
+                });
+                renderCards();
+                updateProgress();
+            }
+        }
+        
+        // حفظ التقدم تلقائياً
+        setInterval(saveProgress, 5000);
+        loadProgress();
+    </script>
+</body>
+</html>
