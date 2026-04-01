@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>شرائح تعليمية - النطق بالعربية والإنجليزية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        /* الرؤوس */
+        .header {
+            background: linear-gradient(135deg, #2d3748, #1a202c);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: clamp(1.5rem, 5vw, 2.2rem);
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: clamp(0.85rem, 3vw, 1rem);
+            opacity: 0.9;
+        }
+
+        /* أزرار التنقل بين الأقسام */
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px;
+            background: #f7fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .nav-btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: white;
+            color: #4a5568;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .nav-btn i {
+            font-size: 1.2rem;
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-btn:hover:not(.active) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            background: #edf2f7;
+        }
+
+        /* محتوى الشرائح */
+        .slides-container {
+            padding: 30px 20px;
+            min-height: 500px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* شبكة البطاقات التعليمية */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 10px;
+        }
+
+        .educational-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid #e2e8f0;
+        }
+
+        .educational-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+
+        .card-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 30px;
+            text-align: center;
+            font-size: 4rem;
+        }
+
+        .card-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .english-word {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 10px;
+            direction: ltr;
+        }
+
+        .arabic-word {
+            font-size: 1.6rem;
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .pronounce-btn {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .pronounce-btn:active {
+            transform: scale(0.95);
+        }
+
+        .pronounce-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+        }
+
+        /* تذييل الصفحة */
+        .footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 0.85rem;
+        }
+
+        /* تحسينات للشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .nav-buttons {
+                gap: 8px;
+                padding: 15px;
+            }
+
+            .nav-btn {
+                min-width: 100px;
+                padding: 10px 15px;
+                font-size: 0.85rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+            }
+
+            .english-word {
+                font-size: 1.4rem;
+            }
+
+            .arabic-word {
+                font-size: 1.3rem;
+            }
+
+            .card-icon {
+                padding: 20px;
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-btn {
+                min-width: 80px;
+                padding: 8px 12px;
+                font-size: 0.75rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .english-word {
+                font-size: 1.3rem;
+            }
+
+            .arabic-word {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* مؤشر النطق */
+        .speaking {
+            animation: pulse 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* أيقونات مؤقتة (بدون FontAwesome نستخدم Unicode) */
+        .icon {
+            font-size: 1.2rem;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 شرائح تعليمية للنطق 🎤</h1>
+            <p>تعلم النطق بالعربية والإنجليزية | اضغط على البطاقة لسماع النطق</p>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="nav-btn" data-slide="0">
+                <span class="icon">🚂</span> المواصلات البرية
+            </button>
+            <button class="nav-btn" data-slide="1">
+                <span class="icon">✈️</span> المواصلات الجوية
+            </button>
+            <button class="nav-btn" data-slide="2">
+                <span class="icon">🚢</span> المواصلات البحرية
+            </button>
+            <button class="nav-btn" data-slide="3">
+                <span class="icon">🏪</span> المحلات التجارية
+            </button>
+        </div>
+
+        <div class="slides-container">
+            <!-- الشريحة 1: المواصلات البرية -->
+            <div class="slide" data-slide-index="0">
+                <div class="cards-grid">
+                    <!-- Train / قطار -->
+                    <div class="educational-card" data-english="Train" data-arabic="قطار" data-pronounce-en="treɪn" data-pronounce-ar="qiṭār">
+                        <div class="card-icon">🚂</div>
+                        <div class="card-content">
+                            <div class="english-word">Train</div>
+                            <div class="arabic-word">🚂 قطار</div>
+                            <button class="pronounce-btn">🔊 استمع للنطق</button>
+                        </div>
+                    </div>
+
+                    <!-- Bus / أتوبيس -->
+                    <div class="educational-card" data-english="Bus" data-arabic="أتوبيس" data-pronounce-en="bʌs" data-pronounce-ar="ʾutūbīs">
+                        <div class="card-icon">🚌</div>
+                        <div class="card-content">
+                            <div class="english-word">Bus</div>
+                            <div class="arabic-word">🚌 أتوبيس</div>
+                            <button class="pronounce-btn">🔊 استمع للنطق</button>
+                        </div>
+                    </div>
+
+                    <!-- Car / سيارة -->
+                    <div class="educational-card" data-english="Car" data-arabic="سيارة" data-pronounce-en="kɑːr" data-pronounce-ar="sayyārah">
+                        <div class="card-icon">🚗</div>
+                        <div class="card-content">
+                            <div class="english-word">Car</div>
+                            <div class="arabic-word">🚗 سيارة</div>
+                            <button class="pronounce-btn">🔊 استمع للنطق</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الشريحة 2: المواصلات الجوية -->
+            <div class="slide" data-slide-index="1">
+                <div class="cards-grid">
+                    <!-- Air Plane / طائرة -->
+                    <div class="educational-card" data-english="Airplane" data-arabic="طائرة" data-pronounce-en="ˈerpleɪn" data-pronounce-ar="ṭāʾirah">
+                        <div class="card-icon">✈️</div>
+                        <div class="card-content">
+                            <div class="english-word">Airplane</div>
+                            <div class="arabic-word">✈️ طائرة</div>
+                            <button class="pronounce-btn">🔊 استمع للنطق</button>
+                        </div>
+                    </div>
+
+                    <!-- Helicopter / مروحية - هليكوبتر -->
+                    <div class="educational-card" data-english="Helicopter" data-arabic="مروحية / هليكوبتر" data-pronounce-en="ˈhelɪkɑːptər" data-pronounce-ar="mrwḥīyah / hlykwbtr">
+                        <div class="card-icon">🚁</div>
+                        <div class="card-content">
+                            <div class="english-word">Helicopter</div>
+                            <div class="arabic-word">🚁 مروحية / هليكوبتر</div>
+                            <button class="pronounce-btn">🔊 استمع للنطق</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الشريحة 3: المواصلات البحرية -->
+            <div class="slide" data-slide-index="2">
+                <div class="cards-grid">
+                    <!-- Ship / سفينة -->
+                    <div class="educational-card" data-english="Ship" data-arabic="سفينة" data-pronounce-en="ʃɪp" data-pronounce-ar="safīnah">
+                        <div class="card-icon">🚢</div>
+                        <div class="card-content">
+                            <div class="english-word">Ship</div>
+                            <div class="arabic-word">🚢 سفينة</div>
+                            <button class="pronounce-btn">🔊 استمع للنطق</button>
+                        </div>
+                    </div>
+
+                    <!-- Boat / قارب -->
+                    <div class="educational-card" data-english="Boat" data-arabic="قارب" data-pronounce-en="boʊt" data-pronounce-ar="qārib">
+                        <div class="card-icon">⛵</div>
+                        <div class="card-content">
+                            <div class="english-word">Boat</div>
+                            <div class="arabic-word">⛵ قارب</div>
+                            <button class="pronounce-btn">🔊 استمع للنطق</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الشريحة 4: المحلات التجارية -->
+            <div class="slide" data-slide-index="3">
+                <div class="cards-grid">
+                    <!-- Pharmacy / صيدلية -->
+                    <div class="educational-card" data-english="Pharmacy" data-arabic="صيدلية" data-pronounce-en="ˈfɑːrməsi" data-pronounce-ar="ṣaydalīyah">
+                        <div class="card-icon">💊</div>
+                        <div class="card-content">
+                            <div class="english-word">Pharmacy</div>
+                            <div class="arabic-word">💊 صيدلية</div>
+                            <button class="pronounce-btn">🔊 استمع للنطق</button>
+                        </div>
+                    </div>
+
+                    <!-- Toy Store / محل العاب -->
+                    <div class="educational-card" data-english="Toy Store" data-arabic="محل ألعاب" data-pronounce-en="tɔɪ stɔːr" data-pronounce-ar="maḥall ʾalʿāb">
+                        <div class="card-icon">🧸</div>
+                        <div class="card-content">
+                            <div class="english-word">Toy Store</div>
+                            <div class="arabic-word">🧸 محل ألعاب</div>
+                            <button class="pronounce-btn">🔊 استمع للنطق</button>
+                        </div>
+                    </div>
+
+                    <!-- Clothes Store / محل ملابس -->
+                    <div class="educational-card" data-english="Clothes Store" data-arabic="محل ملابس" data-pronounce-en="kloʊðz stɔːr" data-pronounce-ar="maḥall malābis">
+                        <div class="card-icon">👕</div>
+                        <div class="card-content">
+                            <div class="english-word">Clothes Store</div>
+                            <div class="arabic-word">👕 محل ملابس</div>
+                            <button class="pronounce-btn">🔊 استمع للنطق</button>
+                        </div>
+                    </div>
+
+                    <!-- Supermarket / بقالة - سوبر ماركت -->
+                    <div class="educational-card" data-english="Supermarket" data-arabic="بقالة / سوبر ماركت" data-pronounce-en="ˈsuːpərmɑːrkɪt" data-pronounce-ar="baqqālah / sūbr mārkt">
+                        <div class="card-icon">🛒</div>
+                        <div class="card-content">
+                            <div class="english-word">Supermarket</div>
+                            <div class="arabic-word">🛒 بقالة / سوبر ماركت</div>
+                            <button class="pronounce-btn">🔊 استمع للنطق</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            🎧 اضغط على أي بطاقة أو زر "استمع للنطق" لسماع الكلمة | مصمم لجميع الأجهزة
+        </div>
+    </div>
+
+    <script>
+        // دالة النطق باستخدام Web Speech API
+        function speakText(text, lang) {
+            if ('speechSynthesis' in window) {
+                // إيقاف أي نطق قيد التشغيل
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang;
+                utterance.rate = 0.9;
+                utterance.pitch = 1;
+                
+                // إضافة تأثير بصر على البطاقة أثناء النطق
+                utterance.onstart = function() {
+                    const activeCard = document.querySelector('.educational-card.speaking');
+                    if (activeCard) {
+                        activeCard.classList.remove('speaking');
+                    }
+                };
+                
+                utterance.onend = function() {
+                    const speakingCard = document.querySelector('.educational-card.speaking');
+                    if (speakingCard) {
+                        speakingCard.classList.remove('speaking');
+                    }
+                };
+                
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("متصفحك لا يدعم خاصية النطق. يرجى استخدام متصفح حديث مثل Chrome, Edge, أو Safari.");
+            }
+        }
+
+        // إعداد وظائف النطق لجميع البطاقات
+        function setupPronunciationCards() {
+            const cards = document.querySelectorAll('.educational-card');
+            
+            cards.forEach(card => {
+                const englishWord = card.getAttribute('data-english');
+                const arabicWord = card.getAttribute('data-arabic');
+                const pronounceBtn = card.querySelector('.pronounce-btn');
+                
+                // متغير لتتبع اللغة الحالية
+                let currentLang = 'en-US';
+                let currentText = englishWord;
+                
+                // وظيفة النطق المتناوب (إنجليزي ثم عربي)
+                function togglePronunciation() {
+                    // إضافة تأثير
+                    card.classList.add('speaking');
+                    
+                    if (currentLang === 'en-US') {
+                        // نطق الإنجليزية
+                        speakText(englishWord, 'en-US');
+                        currentLang = 'ar-SA';
+                        currentText = arabicWord;
+                        // تغيير نص الزر مؤقتاً
+                        pronounceBtn.innerHTML = '🔊 نطق عربي';
+                        setTimeout(() => {
+                            if (pronounceBtn.innerHTML === '🔊 نطق عربي') {
+                                pronounceBtn.innerHTML = '🔊 استمع للنطق';
+                            }
+                        }, 2000);
+                    } else {
+                        // نطق العربية
+                        speakText(arabicWord, 'ar-SA');
+                        currentLang = 'en-US';
+                        currentText = englishWord;
+                        pronounceBtn.innerHTML = '🔊 نطق إنجليزي';
+                        setTimeout(() => {
+                            if (pronounceBtn.innerHTML === '🔊 نطق إنجليزي') {
+                                pronounceBtn.innerHTML = '🔊 استمع للنطق';
+                            }
+                        }, 2000);
+                    }
+                    
+                    // إزالة تأثير speaking بعد الانتهاء
+                    setTimeout(() => {
+                        card.classList.remove('speaking');
+                    }, 1500);
+                }
+                
+                // نقر على الزر
+                pronounceBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    togglePronunciation();
+                });
+                
+                // نقر على البطاقة نفسها
+                card.addEventListener('click', (e) => {
+                    // منع إذا كان الزر هو المستهدف
+                    if (e.target === pronounceBtn || pronounceBtn.contains(e.target)) {
+                        return;
+                    }
+                    togglePronunciation();
+                });
+                
+                // إعادة تعيين لغة النطق عند مغادرة البطاقة
+                card.addEventListener('mouseleave', () => {
+                    currentLang = 'en-US';
+                    pronounceBtn.innerHTML = '🔊 استمع للنطق';
+                });
+            });
+        }
+
+        // التنقل بين الشرائح
+        function setupSlideNavigation() {
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const slides = document.querySelectorAll('.slide');
+            
+            // إظهار الشريحة الأولى افتراضياً
+            let currentSlide = 0;
+            slides[currentSlide].classList.add('active');
+            navButtons[currentSlide].classList.add('active');
+            
+            navButtons.forEach((btn, index) => {
+                btn.addEventListener('click', () => {
+                    const slideIndex = parseInt(btn.getAttribute('data-slide'));
+                    
+                    // إخفاء جميع الشرائح
+                    slides.forEach(slide => {
+                        slide.classList.remove('active');
+                    });
+                    
+                    // إزالة التفعيل من جميع الأزرار
+                    navButtons.forEach(button => {
+                        button.classList.remove('active');
+                    });
+                    
+                    // إظهار الشريحة المختارة
+                    slides[slideIndex].classList.add('active');
+                    btn.classList.add('active');
+                    currentSlide = slideIndex;
+                    
+                    // تأثير انزلاق ناعم
+                    const container = document.querySelector('.slides-container');
+                    container.style.opacity = '0';
+                    setTimeout(() => {
+                        container.style.opacity = '1';
+                    }, 100);
+                });
+            });
+        }
+
+        // تحسين تجربة اللمس للأجهزة المحمولة
+        function enhanceTouchExperience() {
+            const cards = document.querySelectorAll('.educational-card');
+            cards.forEach(card => {
+                card.addEventListener('touchstart', (e) => {
+                    // إضافة تأثير بسيط للمس
+                    card.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        card.style.transform = '';
+                    }, 150);
+                });
+            });
+        }
+
+        // دعم إضافي للمتصفحات للتأكد من أن Web Speech API يعمل بشكل صحيح
+        function initializeSpeechSupport() {
+            // تأكد من أن المتصفح يدعم النطق
+            if (!('speechSynthesis' in window)) {
+                const allButtons = document.querySelectorAll('.pronounce-btn');
+                allButtons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.style.opacity = '0.5';
+                    btn.title = 'متصفحك لا يدعم خاصية النطق';
+                });
+                alert("⚠️ متصفحك لا يدعم خاصية النطق الصوتي. يرجى استخدام Chrome, Edge, أو Safari للحصول على أفضل تجربة.");
+            }
+        }
+
+        // دالة لتحديث الأيقونات وإضافة أيقونات اللمس
+        function setupIcons() {
+            // تحسين عرض الأيقونات في الأزرار
+            const btns = document.querySelectorAll('.nav-btn');
+            btns.forEach(btn => {
+                const iconSpan = btn.querySelector('.icon');
+                if (iconSpan) {
+                    iconSpan.style.fontSize = '1.3rem';
+                }
+            });
+        }
+
+        // تشغيل جميع الوظائف عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', () => {
+            setupPronunciationCards();
+            setupSlideNavigation();
+            enhanceTouchExperience();
+            initializeSpeechSupport();
+            setupIcons();
+            
+            // تحسين للشاشات الصغيرة: جعل البطاقات قابلة للتمرير بشكل سلس
+            const slidesContainer = document.querySelector('.slides-container');
+            if (slidesContainer) {
+                slidesContainer.style.transition = 'opacity 0.3s ease';
+            }
+            
+            // إضافة دعم لتعدد النقر على البطاقات لمنع تكرار النطق بشكل مزعج
+            let isSpeaking = false;
+            const originalSpeak = speakText;
+            window.speakText = function(text, lang) {
+                if (isSpeaking) {
+                    window.speechSynthesis.cancel();
+                }
+                isSpeaking = true;
+                originalSpeak(text, lang);
+                setTimeout(() => {
+                    isSpeaking = false;
+                }, 2000);
+            };
+            speakText = window.speakText;
+        });
+    </script>
+</body>
+</html>
