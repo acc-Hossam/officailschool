@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>ترتيب الأرقام - لعبة البطاقات التفاعلية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 20px 25px 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 1200px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4a5568;
+            margin-bottom: 10px;
+            font-size: clamp(1.5rem, 5vw, 2.2rem);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 25px;
+            font-size: clamp(0.85rem, 3vw, 1rem);
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+            border-radius: 15px;
+            padding: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            color: #0c4a6e;
+            border-right: 4px solid #0284c7;
+        }
+
+        .cards-area {
+            background: #f7fafc;
+            border-radius: 20px;
+            padding: 30px 20px;
+            margin-bottom: 25px;
+            min-height: 280px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cards-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .card {
+            width: clamp(100px, 20vw, 160px);
+            height: clamp(120px, 25vw, 180px);
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(2rem, 8vw, 4rem);
+            font-weight: bold;
+            color: #2d3748;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            cursor: grab;
+            transition: all 0.2s ease;
+            position: relative;
+            border: 3px solid #e2e8f0;
+        }
+
+        .card:active {
+            cursor: grabbing;
+        }
+
+        .card.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+
+        .card.drag-over {
+            border: 3px solid #48bb78;
+            background: #f0fff4;
+            transform: scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: clamp(0.9rem, 4vw, 1rem);
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            min-width: 120px;
+        }
+
+        button:active {
+            transform: scale(0.96);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+
+        .check-btn {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+        }
+
+        .randomize-btn {
+            background: linear-gradient(135deg, #ed8936, #dd6b20);
+        }
+
+        .message {
+            text-align: center;
+            padding: 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: clamp(0.9rem, 4vw, 1.1rem);
+            background: #edf2f7;
+            color: #2d3748;
+            margin-top: 10px;
+        }
+
+        .message.success {
+            background: #c6f6d5;
+            color: #22543d;
+            border-right: 5px solid #48bb78;
+        }
+
+        .message.error {
+            background: #fed7d7;
+            color: #742a2a;
+            border-right: 5px solid #f56565;
+        }
+
+        .message.info {
+            background: #bee3f8;
+            color: #2c5282;
+            border-right: 5px solid #3182ce;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px 20px 25px;
+            }
+            
+            .cards-area {
+                padding: 20px 15px;
+            }
+            
+            .cards-wrapper {
+                gap: 15px;
+            }
+            
+            button {
+                padding: 10px 20px;
+                min-width: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cards-wrapper {
+                gap: 12px;
+            }
+            
+            .controls {
+                gap: 10px;
+            }
+            
+            button {
+                padding: 8px 16px;
+                min-width: 85px;
+                font-size: 0.85rem;
+            }
+        }
+
+        .drag-instruction {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #718096;
+            margin-top: 15px;
+            padding: 8px;
+            background: #e6fffa;
+            border-radius: 10px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎴 ترتيب الأرقام 🎴</h1>
+        <div class="subtitle">اسحب البطاقات وأعد ترتيبها حسب رغبتك</div>
+        
+        <div class="info-box">
+            📊 الأرقام الحالية: <span id="numbersInfo"></span> | المجال: 1 - 20
+        </div>
+        
+        <div class="cards-area">
+            <div class="cards-wrapper" id="cardsWrapper"></div>
+        </div>
+
+        <div class="controls">
+            <button class="randomize-btn" id="randomizeBtn">🎲 ترتيب عشوائي</button>
+            <button class="check-btn" id="checkBtn">✅ تحقق من الترتيب</button>
+        </div>
+
+        <div class="message" id="message">
+            🔢 الأرقام غير متتالية في البداية. قم بترتيبها لتكون متتالية!
+        </div>
+        <div class="drag-instruction">
+            💡 اسحب أي بطاقة وضعها على بطاقة أخرى لتبديل الأماكن (السحب والإفلات)
+        </div>
+        <footer>🎯 الهدف: ترتيب الأرقام لتكون متتالية (مثل: 5,6,7,8 أو 12,13,14,15)</footer>
+    </div>
+
+    <script>
+        // متغيرات عامة
+        let currentNumbers = [];     // الأرقام الحالية المعروضة (4 أرقام)
+        let draggedIndex = null;     // فهرس البطاقة المسحوبة
+        let originalConsecutiveSet = []; // تخزين الأرقام المتتالية الأصلية
+
+        // عناصر DOM
+        const cardsWrapper = document.getElementById('cardsWrapper');
+        const randomizeBtn = document.getElementById('randomizeBtn');
+        const checkBtn = document.getElementById('checkBtn');
+        const messageDiv = document.getElementById('message');
+        const numbersInfo = document.getElementById('numbersInfo');
+
+        // دالة لتوليد 4 أرقام متتالية عشوائية من 1 إلى 20
+        function generateConsecutiveNumbers() {
+            // الحد الأقصى لبداية التسلسل: 17 (لأن 17,18,19,20)
+            const maxStart = 17;
+            const start = Math.floor(Math.random() * maxStart) + 1;
+            const consecutive = [start, start + 1, start + 2, start + 3];
+            return consecutive;
+        }
+
+        // دالة لخلط المصفوفة عشوائياً (ترتيب عشوائي)
+        function shuffleArray(arr) {
+            const shuffled = [...arr];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // دالة لبدء لعبة جديدة (أرقام متتالية جديدة بترتيب عشوائي)
+        function newGame() {
+            // توليد 4 أرقام متتالية
+            originalConsecutiveSet = generateConsecutiveNumbers();
+            // ترتيبها بشكل عشوائي
+            currentNumbers = shuffleArray(originalConsecutiveSet);
+            renderCards();
+            updateNumbersInfo();
+            messageDiv.textContent = `🎲 أرقام جديدة: ${originalConsecutiveSet.join(', ')} (مرتبة عشوائياً). قم بترتيبها لتكون متتالية! 🎲`;
+            messageDiv.className = "message info";
+            setTimeout(() => {
+                updateMessage();
+            }, 3000);
+        }
+
+        // دالة لتحديث معلومات الأرقام المعروضة
+        function updateNumbersInfo() {
+            numbersInfo.textContent = currentNumbers.join(' - ');
+        }
+
+        // دالة للتحقق مما إذا كانت الأرقام متتالية (ورا بعض)
+        function areConsecutive(numbers) {
+            if (numbers.length !== 4) return false;
+            // نسخ الأرقام وترتيبها تصاعدياً للتحقق من التتالي
+            const sorted = [...numbers].sort((a, b) => a - b);
+            // التحقق من أن الفرق بين كل رقمين متجاورين هو 1
+            for (let i = 0; i < sorted.length - 1; i++) {
+                if (sorted[i + 1] - sorted[i] !== 1) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // دالة لتحديث عرض الرسالة
+        function updateMessage() {
+            if (areConsecutive(currentNumbers)) {
+                messageDiv.textContent = `🎉 رائع! الأرقام متتالية 🎉 (${currentNumbers.sort((a,b)=>a-b).join(', ')})`;
+                messageDiv.className = "message success";
+            } else {
+                const sortedCurrent = [...currentNumbers].sort((a,b)=>a-b);
+                messageDiv.textContent = `⚠️ الأرقام غير متتالية. الترتيب الحالي: ${currentNumbers.join(', ')}. قم بترتيبها لتكون متتالية! (المجموعة المتتالية المطلوبة: ${originalConsecutiveSet.join(', ')}) ⚠️`;
+                messageDiv.className = "message error";
+            }
+        }
+
+        // دالة لعرض البطاقات
+        function renderCards() {
+            cardsWrapper.innerHTML = '';
+            currentNumbers.forEach((number, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.textContent = number;
+                card.setAttribute('draggable', 'true');
+                card.setAttribute('data-index', index);
+                
+                // أحداث السحب (Drag & Drop)
+                card.addEventListener('dragstart', handleDragStart);
+                card.addEventListener('dragend', handleDragEnd);
+                card.addEventListener('dragover', handleDragOver);
+                card.addEventListener('dragleave', handleDragLeave);
+                card.addEventListener('drop', handleDrop);
+                
+                // دعم اللمس
+                card.addEventListener('touchstart', handleTouchStart);
+                card.addEventListener('touchmove', handleTouchMove);
+                card.addEventListener('touchend', handleTouchEnd);
+                
+                cardsWrapper.appendChild(card);
+            });
+            
+            updateNumbersInfo();
+            updateMessage();
+        }
+
+        // ============= أحداث السحب بالماوس =============
+        function handleDragStart(e) {
+            draggedIndex = parseInt(e.target.getAttribute('data-index'));
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', draggedIndex);
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+            draggedIndex = null;
+            document.querySelectorAll('.card').forEach(card => {
+                card.classList.remove('drag-over');
+            });
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            const targetCard = e.target.closest('.card');
+            if (targetCard && !targetCard.classList.contains('dragging')) {
+                targetCard.classList.add('drag-over');
+            }
+        }
+
+        function handleDragLeave(e) {
+            const targetCard = e.target.closest('.card');
+            if (targetCard) {
+                targetCard.classList.remove('drag-over');
+            }
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const targetCard = e.target.closest('.card');
+            if (!targetCard) return;
+            
+            targetCard.classList.remove('drag-over');
+            const targetIndex = parseInt(targetCard.getAttribute('data-index'));
+            
+            if (draggedIndex !== null && draggedIndex !== targetIndex) {
+                // تبديل الأرقام
+                [currentNumbers[draggedIndex], currentNumbers[targetIndex]] = 
+                [currentNumbers[targetIndex], currentNumbers[draggedIndex]];
+                renderCards();
+            }
+            
+            draggedIndex = null;
+        }
+
+        // ============= دعم اللمس =============
+        let touchStartIndex = null;
+        let touchTargetElement = null;
+
+        function handleTouchStart(e) {
+            e.preventDefault();
+            const card = e.target.closest('.card');
+            if (!card) return;
+            
+            touchStartIndex = parseInt(card.getAttribute('data-index'));
+            touchTargetElement = card;
+            card.classList.add('dragging');
+            
+            try {
+                if (navigator.vibrate) navigator.vibrate(50);
+            } catch(err) {}
+        }
+
+        function handleTouchMove(e) {
+            e.preventDefault();
+            if (touchStartIndex === null) return;
+            
+            const touch = e.touches[0];
+            const elemUnderTouch = document.elementFromPoint(touch.clientX, touch.clientY);
+            const targetCard = elemUnderTouch?.closest('.card');
+            
+            document.querySelectorAll('.card').forEach(card => {
+                card.classList.remove('drag-over');
+            });
+            
+            if (targetCard && targetCard !== touchTargetElement) {
+                targetCard.classList.add('drag-over');
+            }
+        }
+
+        function handleTouchEnd(e) {
+            e.preventDefault();
+            if (touchStartIndex === null) return;
+            
+            if (touchTargetElement) {
+                touchTargetElement.classList.remove('dragging');
+            }
+            
+            const changedTouch = e.changedTouches[0];
+            const elemAtEnd = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
+            const targetCard = elemAtEnd?.closest('.card');
+            
+            if (targetCard) {
+                const targetIndex = parseInt(targetCard.getAttribute('data-index'));
+                if (touchStartIndex !== targetIndex) {
+                    [currentNumbers[touchStartIndex], currentNumbers[targetIndex]] = 
+                    [currentNumbers[targetIndex], currentNumbers[touchStartIndex]];
+                    renderCards();
+                    
+                    try {
+                        if (navigator.vibrate) navigator.vibrate(100);
+                    } catch(err) {}
+                }
+            }
+            
+            document.querySelectorAll('.card').forEach(card => {
+                card.classList.remove('drag-over');
+            });
+            
+            touchStartIndex = null;
+            touchTargetElement = null;
+        }
+
+        // دالة لترتيب عشوائي للأرقام الحالية
+        function randomizeOrder() {
+            currentNumbers = shuffleArray(currentNumbers);
+            renderCards();
+            messageDiv.textContent = "✨ تم ترتيب البطاقات عشوائياً ✨";
+            messageDiv.className = "message info";
+            setTimeout(() => {
+                updateMessage();
+            }, 1500);
+        }
+
+        // دالة للتحقق من الترتيب
+        function checkOrder() {
+            if (areConsecutive(currentNumbers)) {
+                messageDiv.textContent = `🎉 مذهل! الأرقام متتالية. أحسنت! 🎉 (${currentNumbers.sort((a,b)=>a-b).join(', ')})`;
+                messageDiv.className = "message success";
+                cardsWrapper.style.transform = "scale(1.01)";
+                setTimeout(() => {
+                    cardsWrapper.style.transform = "";
+                }, 300);
+            } else {
+                const sortedCurrent = [...currentNumbers].sort((a,b)=>a-b);
+                messageDiv.textContent = `❌ الأرقام غير متتالية. الترتيب الحالي: ${currentNumbers.join(', ')}. الأرقام المطلوب ترتيبها: ${originalConsecutiveSet.join(', ')} ❌`;
+                messageDiv.className = "message error";
+            }
+        }
+
+        // إضافة أزرار التحكم
+        randomizeBtn.addEventListener('click', randomizeOrder);
+        checkBtn.addEventListener('click', checkOrder);
+        
+        // زر أرقام جديدة
+        const newGameBtn = document.createElement('button');
+        newGameBtn.textContent = "🔄 أرقام جديدة";
+        newGameBtn.style.background = "linear-gradient(135deg, #4299e1, #3182ce)";
+        newGameBtn.addEventListener('click', () => {
+            newGame();
+        });
+        
+        const controlsDiv = document.querySelector('.controls');
+        controlsDiv.appendChild(newGameBtn);
+        
+        // إضافة زر لعرض الحل
+        const showSolutionBtn = document.createElement('button');
+        showSolutionBtn.textContent = "💡 عرض الحل";
+        showSolutionBtn.style.background = "linear-gradient(135deg, #fbbf24, #f59e0b)";
+        showSolutionBtn.style.color = "#1e293b";
+        showSolutionBtn.addEventListener('click', () => {
+            messageDiv.textContent = `💡 الحل: رتب الأرقام لتكون ${originalConsecutiveSet.join(', ')} (أي ترتيب متتالي) 💡`;
+            messageDiv.className = "message info";
+            setTimeout(() => {
+                updateMessage();
+            }, 3000);
+        });
+        controlsDiv.appendChild(showSolutionBtn);
+        
+        // منع السحب الافتراضي
+        window.addEventListener('dragstart', (e) => {
+            if (!e.target.closest('.card')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+        
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', '');
+            });
+        });
+        
+        // منع التمرير أثناء السحب باللمس
+        document.body.addEventListener('touchmove', (e) => {
+            if (touchStartIndex !== null) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        // بدء اللعبة
+        newGame();
+        
+        window.addEventListener('resize', () => {
+            renderCards();
+        });
+    </script>
+</body>
+</html>
