@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>بطاقات التعلم التفاعلية - للأطفال</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', 'Comic Neue', 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* الحاوية الرئيسية */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* العنوان */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #fff;
+            text-shadow: 5px 5px 0 #ff6b6b, 3px 3px 10px rgba(0,0,0,0.3);
+            background: rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 15px 40px;
+            border-radius: 80px;
+            backdrop-filter: blur(10px);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* أقسام الصفحة */
+        .section {
+            background: rgba(255,255,255,0.9);
+            border-radius: 60px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px dashed #ffd93d;
+            display: inline-block;
+            width: 100%;
+        }
+
+        /* شبكة الكروت */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        /* تصميم الكارت */
+        .card {
+            background: linear-gradient(145deg, #ffffff, #fef9e6);
+            border-radius: 40px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 25px rgba(0,0,0,0.1);
+            border: 3px solid #ffd93d;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.2);
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
+        /* صورة الكارت */
+        .card-image {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 15px;
+            background: #ffeaa7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 4px solid #ff6b6b;
+            transition: transform 0.3s;
+        }
+
+        .card:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-image .emoji {
+            font-size: 4rem;
+        }
+
+        /* النصوص */
+        .arabic-word {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2d3436;
+            margin: 10px 0;
+        }
+
+        .english-word {
+            font-size: 1.3rem;
+            color: #0984e3;
+            margin: 5px 0;
+            font-weight: bold;
+        }
+
+        .symbol {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #e17055;
+            margin: 10px 0;
+        }
+
+        .description {
+            font-size: 0.9rem;
+            color: #636e72;
+            margin-top: 10px;
+            padding: 5px;
+            background: #f0f0f0;
+            border-radius: 20px;
+        }
+
+        /* أيقونة الصوت */
+        .sound-icon {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #ff6b6b;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            transition: 0.3s;
+        }
+
+        .card:hover .sound-icon {
+            transform: scale(1.1);
+            background: #ff4757;
+        }
+
+        /* أزرار التحكم */
+        .control-bar {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .play-all-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: white;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            font-family: inherit;
+        }
+
+        .play-all-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* رسالة */
+        .message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4cd964;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: bold;
+            animation: slideIn 0.5s ease;
+            z-index: 1000;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* قسم خاص لمصطلحات الرياضيات */
+        .math-section .cards-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+
+        /* متجاوب */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+                padding: 10px 25px;
+            }
+            .section-title {
+                font-size: 1.4rem;
+            }
+            .arabic-word {
+                font-size: 1.4rem;
+            }
+            .english-word {
+                font-size: 1.1rem;
+            }
+            .card-image {
+                width: 90px;
+                height: 90px;
+            }
+            .cards-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* حركة بسيطة للكروت */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .card {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .card:nth-child(even) {
+            animation-delay: 1s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 بطاقاتي التفاعلية 🎈</h1>
+        </div>
+
+        <!-- قسم مصطلحات الرياضيات -->
+        <div class="section math-section">
+            <div class="section-title">🧮 مفاهيم الرياضيات 🧮</div>
+            <div class="cards-grid" id="mathCards"></div>
+        </div>
+
+        <!-- قسم الكلمات المصورة -->
+        <div class="section">
+            <div class="section-title">🐘 كلمات وصور 🍎</div>
+            <div class="cards-grid" id="vocabCards"></div>
+        </div>
+
+        <div class="control-bar">
+            <button class="play-all-btn" id="playAllBtn">🔊 تشغيل جميع الكلمات (عربي + إنجليزي)</button>
+        </div>
+    </div>
+
+    <script>
+        // بيانات الكروت - قسم الرياضيات
+        const mathWords = [
+            {
+                arabic: "الترتيب التصاعدي",
+                english: "Ascending Order",
+                description: "من الأصغر إلى الأكبر",
+                symbol: "⬆️ 1,2,3,4",
+                emoji: "📈"
+            },
+            {
+                arabic: "الترتيب التنازلي",
+                english: "Descending Order",
+                description: "من الأكبر إلى الأصغر",
+                symbol: "⬇️ 4,3,2,1",
+                emoji: "📉"
+            },
+            {
+                arabic: "أكبر من",
+                english: "Greater Than",
+                description: "الرقم الأكبر",
+                symbol: ">",
+                emoji: "🔴"
+            },
+            {
+                arabic: "أصغر من",
+                english: "Smaller Than",
+                description: "الرقم الأصغر",
+                symbol: "<",
+                emoji: "🔵"
+            },
+            {
+                arabic: "يساوي",
+                english: "Equals to",
+                description: "رقمان متساويان",
+                symbol: "=",
+                emoji: "⚖️"
+            }
+        ];
+
+        // بيانات الكلمات المصورة (مع صور مناسبة)
+        const vocabWords = [
+            { arabic: "جزار", english: "Butcher", image: "🥩", emoji: "🔪" },
+            { arabic: "نجار", english: "Carpenter", image: "🪚", emoji: "🔨" },
+            { arabic: "خياطة", english: "Seamstress", image: "🧵", emoji: "🪡" },
+            { arabic: "كرنب", english: "Cabbage", image: "🥬", emoji: "🥬" },
+            { arabic: "يقطين", english: "Pumpkin", image: "🎃", emoji: "🎃" },
+            { arabic: "طائرة نفاثة", english: "Jet", image: "✈️", emoji: "🛩️" },
+            { arabic: "بذور", english: "Seeds", image: "🌱", emoji: "🌰" },
+            { arabic: "جرار", english: "Tractor", image: "🚜", emoji: "🚜" },
+            { arabic: "أوراق", english: "Leaves", image: "🍃", emoji: "🍂" }
+        ];
+
+        // دالة النطق
+        function speakText(text, lang, callback) {
+            if (!window.speechSynthesis) {
+                console.log("المتصفح لا يدعم النطق");
+                if(callback) callback();
+                return;
+            }
+
+            window.speechSynthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang;
+            utterance.rate = 0.85;
+            utterance.pitch = 1.2;
+            
+            if (callback) {
+                utterance.onend = callback;
+            }
+            
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // نطق الكلمة (عربي ثم إنجليزي)
+        function speakWord(arabic, english) {
+            // نطق العربية أولاً
+            speakText(arabic, "ar-SA", () => {
+                // بعد انتهاء العربية، ننطق الإنجليزية
+                setTimeout(() => {
+                    speakText(english, "en-US", null);
+                }, 200);
+            });
+        }
+
+        // عرض رسالة مؤقتة
+        function showMessage(word) {
+            const msg = document.createElement('div');
+            msg.className = 'message';
+            msg.innerHTML = `🔊 جاري نطق: ${word}`;
+            document.body.appendChild(msg);
+            setTimeout(() => {
+                msg.remove();
+            }, 1500);
+        }
+
+        // إنشاء كروت الرياضيات
+        function createMathCards() {
+            const container = document.getElementById('mathCards');
+            container.innerHTML = '';
+            
+            mathWords.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.setAttribute('data-arabic', item.arabic);
+                card.setAttribute('data-english', item.english);
+                
+                card.innerHTML = `
+                    <div class="sound-icon">🔊</div>
+                    <div class="card-image">
+                        <div class="emoji">${item.emoji}</div>
+                    </div>
+                    <div class="arabic-word">${item.arabic}</div>
+                    <div class="english-word">${item.english}</div>
+                    <div class="symbol">${item.symbol}</div>
+                    <div class="description">${item.description}</div>
+                `;
+                
+                card.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showMessage(`${item.arabic} - ${item.english}`);
+                    speakWord(item.arabic, item.english);
+                });
+                
+                container.appendChild(card);
+            });
+        }
+
+        // إنشاء كروت المفردات المصورة
+        function createVocabCards() {
+            const container = document.getElementById('vocabCards');
+            container.innerHTML = '';
+            
+            vocabWords.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.setAttribute('data-arabic', item.arabic);
+                card.setAttribute('data-english', item.english);
+                
+                card.innerHTML = `
+                    <div class="sound-icon">🔊</div>
+                    <div class="card-image">
+                        <div class="emoji" style="font-size: 4rem;">${item.image}</div>
+                    </div>
+                    <div class="arabic-word">${item.arabic}</div>
+                    <div class="english-word">${item.english}</div>
+                    <div class="description">👆 اضغط للاستماع</div>
+                `;
+                
+                card.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showMessage(`${item.arabic} - ${item.english}`);
+                    speakWord(item.arabic, item.english);
+                });
+                
+                container.appendChild(card);
+            });
+        }
+
+        // تشغيل جميع الكلمات (كل كلمة عربي ثم إنجليزي)
+        async function playAllWords() {
+            const allWords = [...mathWords, ...vocabWords];
+            
+            for (let i = 0; i < allWords.length; i++) {
+                const word = allWords[i];
+                showMessage(`(${i+1}/${allWords.length}) ${word.arabic} - ${word.english}`);
+                
+                await new Promise((resolve) => {
+                    speakWord(word.arabic, word.english);
+                    // انتظار 3 ثواني قبل الكلمة التالية
+                    setTimeout(resolve, 3000);
+                });
+            }
+            
+            showMessage("🎉 تم الانتهاء من جميع الكلمات! 🎉");
+        }
+
+        // إنشاء الكروت عند تحميل الصفحة
+        createMathCards();
+        createVocabCards();
+
+        // زر تشغيل الكل
+        const playAllBtn = document.getElementById('playAllBtn');
+        playAllBtn.addEventListener('click', () => {
+            playAllWords();
+        });
+
+        // إضافة تأثير حركة عشوائية إضافية
+        const cards = document.querySelectorAll('.card');
+        cards.forEach((card, idx) => {
+            card.style.animationDelay = `${idx * 0.1}s`;
+        });
+
+        // رسالة ترحيب
+        setTimeout(() => {
+            showMessage("🎈 مرحباً! اضغط على أي بطاقة للاستماع 🎈");
+        }, 500);
+    </script>
+</body>
+</html>
