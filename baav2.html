@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نشاط تعليمي للأطفال 🎓</title>
+  <style>
+    /* ===== RESET & BASE ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', 'Arial Rounded MT Bold', Arial, sans-serif;
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 40%, #ff9a9e 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      cursor: default;
+      direction: rtl;
+    }
+
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: rgba(255,255,255,0.2); }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #ff6b6b, #ffd93d, #6bcb77);
+      border-radius: 10px;
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      33% { transform: translateY(-10px) rotate(3deg); }
+      66% { transform: translateY(-5px) rotate(-3deg); }
+    }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-5deg); }
+      75% { transform: rotate(5deg); }
+    }
+    @keyframes pop {
+      0% { transform: scale(0); opacity: 0; }
+      70% { transform: scale(1.15); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes sparkle {
+      0%, 100% { opacity: 0.4; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1); }
+      15% { transform: scale(1.3); }
+      30% { transform: scale(1); }
+      45% { transform: scale(1.2); }
+      60% { transform: scale(1); }
+    }
+    @keyframes starFloat {
+      0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+      50% { transform: translateY(-20px) scale(1.3); opacity: 1; }
+    }
+    @keyframes colorChange {
+      0% { color: #ff6b6b; }
+      25% { color: #ffd93d; }
+      50% { color: #6bcb77; }
+      75% { color: #4d96ff; }
+      100% { color: #ff6b6b; }
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+      20%, 40%, 60%, 80% { transform: translateX(4px); }
+    }
+    @keyframes confettiFall {
+      0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    @keyframes numberPop {
+      0% { transform: scale(0) rotate(-180deg); }
+      60% { transform: scale(1.2) rotate(10deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+    @keyframes cloudMove {
+      0% { transform: translateX(-200px); }
+      100% { transform: translateX(calc(100vw + 200px)); }
+    }
+    @keyframes waveMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 5px rgba(255,193,7,0.5), 0 0 10px rgba(255,193,7,0.3); }
+      50% { box-shadow: 0 0 20px rgba(255,193,7,0.8), 0 0 40px rgba(255,193,7,0.5); }
+    }
+    @keyframes letterTrace {
+      from { clip-path: inset(0 100% 0 0); }
+      to { clip-path: inset(0 0% 0 0); }
+    }
+    @keyframes tada {
+      0% { transform: scale(1) rotate(0deg); }
+      10%, 20% { transform: scale(0.9) rotate(-3deg); }
+      30%, 50%, 70%, 90% { transform: scale(1.1) rotate(3deg); }
+      40%, 60%, 80% { transform: scale(1.1) rotate(-3deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+    @keyframes ripple {
+      0% { transform: scale(1); opacity: 0.4; }
+      100% { transform: scale(2.5); opacity: 0; }
+    }
+    @keyframes draw {
+      to { stroke-dashoffset: 0; }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ===== FLOATING STARS ===== */
+    .floating-stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .floating-stars span {
+      position: absolute;
+      animation: starFloat 3s ease-in-out infinite;
+    }
+
+    /* ===== CLOUDS ===== */
+    .clouds {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      opacity: 0.25;
+    }
+    .clouds span {
+      position: absolute;
+      animation: cloudMove linear infinite;
+    }
+
+    /* ===== CONFETTI ===== */
+    .confetti-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1000;
+    }
+    .confetti-piece {
+      position: absolute;
+      top: -20px;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 30px 16px 20px;
+      animation: slideDown 0.8s ease forwards;
+    }
+    .header-emojis {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+    .header-emojis span {
+      display: inline-block;
+      animation: bounce 1.5s ease-in-out infinite;
+    }
+    .header h1 {
+      font-size: clamp(28px, 6vw, 56px);
+      font-weight: 800;
+      color: #fff;
+      text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+      margin-bottom: 8px;
+    }
+    .header h1 span {
+      display: inline-block;
+      animation: colorChange 4s ease-in-out infinite;
+    }
+    .header p {
+      font-size: clamp(16px, 3vw, 24px);
+      color: rgba(255,255,255,0.95);
+      font-weight: 700;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+
+    /* ===== TAB BAR ===== */
+    .tab-bar {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 16px 24px;
+      flex-wrap: wrap;
+      animation: slideUp 0.8s ease 0.3s both;
+    }
+    .tab-btn {
+      padding: 12px 24px;
+      border-radius: 20px;
+      font-size: clamp(14px, 2.5vw, 20px);
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tab-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+    .tab-btn:active {
+      transform: scale(0.95);
+    }
+    .tab-btn .tab-emoji {
+      font-size: clamp(18px, 3vw, 26px);
+    }
+    .tab-btn.active {
+      color: #fff;
+      transform: scale(1.08);
+      box-shadow: 0 6px 25px rgba(0,0,0,0.25);
+      outline: 4px solid rgba(255,255,255,0.5);
+    }
+    .tab-btn.tab-ba { background: rgba(255,255,255,0.8); color: #555; }
+    .tab-btn.tab-ba.active { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+    .tab-btn.tab-qq { background: rgba(255,255,255,0.8); color: #555; }
+    .tab-btn.tab-qq.active { background: linear-gradient(135deg, #667eea, #764ba2); }
+    .tab-btn.tab-num { background: rgba(255,255,255,0.8); color: #555; }
+    .tab-btn.tab-num.active { background: linear-gradient(135deg, #6bcb77, #0abde3); }
+
+    /* ===== SECTIONS ===== */
+    .section-container {
+      position: relative;
+      z-index: 10;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 16px 40px;
+      animation: fadeInScale 0.5s ease forwards;
+    }
+    .section {
+      display: none;
+    }
+    .section.active {
+      display: block;
+      animation: fadeInScale 0.5s ease forwards;
+    }
+
+    /* ===== MAIN LETTER/NUMBER DISPLAY ===== */
+    .main-display {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .main-letter {
+      font-size: clamp(100px, 22vw, 250px);
+      font-weight: 800;
+      line-height: 1;
+      display: inline-block;
+      animation: float 3s ease-in-out infinite, waveMove 4s ease infinite;
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.2));
+      position: relative;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .main-letter.ba-letter {
+      background-image: linear-gradient(135deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff, #ff6b6b);
+    }
+    .main-letter.qq-letter {
+      background-image: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #667eea);
+    }
+    .main-letter.num-letter {
+      background-image: linear-gradient(135deg, #f093fb, #f5576c, #4facfe, #f093fb);
+    }
+    .main-display .sparkle-deco {
+      position: absolute;
+      font-size: clamp(20px, 4vw, 36px);
+      animation: bounce 2s ease-in-out infinite;
+    }
+    .main-display .sparkle-deco.top { top: -10px; right: -15px; }
+    .main-display .sparkle-deco.bottom { bottom: -10px; left: -15px; animation-delay: 0.3s; }
+    .main-display .label {
+      font-size: clamp(22px, 4vw, 40px);
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      margin-top: 8px;
+    }
+
+    /* ===== CARD BOX ===== */
+    .card-box {
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: clamp(16px, 3vw, 32px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      margin-bottom: 24px;
+    }
+    .card-box h3 {
+      font-size: clamp(18px, 3vw, 26px);
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 800;
+    }
+    .card-box h3.pink { color: #e74c3c; }
+    .card-box h3.blue { color: #2980b9; }
+    .card-box h3.purple { color: #8e44ad; }
+    .card-box h3.green { color: #27ae60; }
+    .card-box h3.teal { color: #00897b; }
+
+    /* ===== WORDS GRID ===== */
+    .words-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (min-width: 640px) {
+      .words-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    }
+    .word-card {
+      border-radius: 18px;
+      padding: 14px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .word-card:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    .word-card:active {
+      transform: scale(0.93);
+    }
+    .word-card.clicked {
+      outline: 4px solid #ffc107;
+      animation: shake 0.5s ease-in-out;
+    }
+    .word-card .word-emoji {
+      font-size: clamp(36px, 7vw, 56px);
+      display: block;
+      margin-bottom: 6px;
+      animation: float 3s ease-in-out infinite;
+    }
+    .word-card .word-text {
+      font-size: clamp(18px, 3vw, 28px);
+      font-weight: 800;
+      display: block;
+    }
+    .word-card .word-desc {
+      font-size: clamp(11px, 1.8vw, 14px);
+      color: #888;
+      margin-top: 3px;
+      display: block;
+    }
+    .word-card .star-badge {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      font-size: 22px;
+      animation: pop 0.4s ease forwards;
+      display: none;
+    }
+    .word-card.clicked .star-badge {
+      display: block;
+    }
+    .word-card.clicked .word-emoji {
+      animation: heartBeat 0.6s ease-in-out infinite;
+    }
+
+    /* ===== TRACE SECTION ===== */
+    .trace-area {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .trace-letter-bg {
+      font-size: clamp(70px, 15vw, 120px);
+      font-weight: 800;
+      color: #e0e0e0;
+      display: inline-block;
+      position: relative;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .trace-letter-fg {
+      font-size: clamp(70px, 15vw, 120px);
+      font-weight: 800;
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(90deg, #6bcb77, #4d96ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      transition: clip-path 0.08s linear;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .trace-btn {
+      padding: 12px 28px;
+      background: linear-gradient(135deg, #6bcb77, #27ae60);
+      color: #fff;
+      font-size: clamp(16px, 2.5vw, 22px);
+      font-weight: 700;
+      border: none;
+      border-radius: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(39,174,96,0.3);
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+    .trace-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(39,174,96,0.4);
+    }
+    .trace-btn:active { transform: scale(0.95); }
+    .trace-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+    .trace-progress {
+      font-size: clamp(14px, 2vw, 18px);
+      font-weight: 700;
+      color: #666;
+    }
+    .trace-success {
+      text-align: center;
+      font-size: clamp(18px, 3vw, 26px);
+      font-weight: 800;
+      color: #27ae60;
+      margin-top: 12px;
+      animation: bounce 0.8s ease-in-out infinite;
+      display: none;
+    }
+    .trace-success.show { display: block; }
+
+    /* ===== QQ MATCH GAME ===== */
+    .match-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .match-header h3 { margin-bottom: 0; }
+    .reset-btn {
+      padding: 8px 18px;
+      background: linear-gradient(135deg, #8e44ad, #6c3483);
+      color: #fff;
+      font-size: clamp(12px, 2vw, 16px);
+      font-weight: 700;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+    .reset-btn:hover { transform: scale(1.05); }
+    .reset-btn:active { transform: scale(0.95); }
+    .match-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (min-width: 640px) {
+      .match-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    }
+    .match-card {
+      padding: 12px 8px;
+      border-radius: 18px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: #fff;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      border: none;
+      font-family: inherit;
+    }
+    .match-card:hover { transform: scale(1.05); background: #eef; }
+    .match-card:active { transform: scale(0.93); }
+    .match-card.selected { outline: 4px solid #ffc107; background: #fff8e1; transform: scale(1.05); }
+    .match-card.matched { background: #e8f5e9; transform: scale(0.95); opacity: 0.6; cursor: default; }
+    .match-card .match-emoji { font-size: clamp(24px, 5vw, 36px); display: block; }
+    .match-card.matched .match-emoji { filter: grayscale(0.5); }
+    .match-card .match-word { font-size: clamp(10px, 1.8vw, 14px); font-weight: 700; color: #555; margin-top: 4px; display: block; }
+    .match-card .match-check { color: #27ae60; font-size: 12px; display: none; }
+    .match-card.matched .match-check { display: block; }
+    .match-complete {
+      text-align: center;
+      font-size: clamp(18px, 3vw, 26px);
+      font-weight: 800;
+      color: #27ae60;
+      margin-top: 16px;
+      animation: bounce 0.8s ease-in-out infinite;
+      display: none;
+    }
+    .match-complete.show { display: block; }
+
+    /* ===== NUMBER SECTION ===== */
+    .count-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    @media (min-width: 640px) {
+      .count-grid { grid-template-columns: repeat(5, 1fr); gap: 14px; }
+    }
+    .count-cell {
+      aspect-ratio: 1;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(30px, 6vw, 48px);
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .count-cell.visible {
+      background: #e8f5e9;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    }
+    .count-cell.visible span {
+      animation: pop 0.4s ease forwards;
+      display: inline-block;
+    }
+    .count-cell.next {
+      background: #fff8e1;
+      animation: pulseGlow 2s ease-in-out infinite;
+      cursor: pointer;
+    }
+    .count-cell.next:hover { transform: scale(1.1); }
+    .count-cell.next:active { transform: scale(0.93); }
+    .count-cell.hidden-cell {
+      background: #f5f5f5;
+      cursor: default;
+    }
+    .count-cell.hidden-cell span {
+      color: #ddd;
+      font-size: clamp(18px, 3vw, 24px);
+    }
+    .counter-display {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .counter-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #fff3e0, #fff8e1);
+      border-radius: 18px;
+      padding: 10px 24px;
+    }
+    .counter-number {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 800;
+      color: #e67e22;
+    }
+    .counter-total {
+      font-size: clamp(18px, 3vw, 24px);
+      color: #999;
+    }
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn-count {
+      padding: 12px 24px;
+      color: #fff;
+      font-size: clamp(16px, 2.5vw, 20px);
+      font-weight: 700;
+      border: none;
+      border-radius: 18px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      font-family: inherit;
+    }
+    .btn-count:hover { transform: scale(1.05); }
+    .btn-count:active { transform: scale(0.95); }
+    .btn-count:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+    .btn-count.green { background: linear-gradient(135deg, #6bcb77, #27ae60); }
+    .btn-count.red { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+    .count-complete {
+      text-align: center;
+      font-size: clamp(18px, 3vw, 26px);
+      font-weight: 800;
+      color: #27ae60;
+      margin-top: 16px;
+      animation: bounce 0.8s ease-in-out infinite;
+      display: none;
+    }
+    .count-complete.show { display: block; }
+
+    /* ===== NUMBER COMPOSITION ===== */
+    .composition {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: clamp(8px, 2vw, 24px);
+      flex-wrap: wrap;
+    }
+    .comp-box {
+      text-align: center;
+    }
+    .comp-number {
+      width: clamp(70px, 14vw, 120px);
+      height: clamp(70px, 14vw, 120px);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(36px, 7vw, 60px);
+      font-weight: 800;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .comp-number.teal { background: #e0f2f1; color: #00897b; }
+    .comp-number.pink { background: #fce4ec; color: #c62828; }
+    .comp-number.gradient {
+      background: linear-gradient(135deg, #6bcb77, #ee5a24);
+      color: #fff;
+      animation: heartBeat 2s ease-in-out infinite;
+    }
+    .comp-label {
+      font-size: clamp(14px, 2.5vw, 20px);
+      font-weight: 700;
+      margin-top: 6px;
+    }
+    .comp-op {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 800;
+      color: #bbb;
+    }
+
+    /* ===== DOTS SECTION ===== */
+    .dots-section {
+      margin-top: 24px;
+      background: #f9f9f9;
+      border-radius: 18px;
+      padding: clamp(12px, 2.5vw, 24px);
+    }
+    .dots-label {
+      text-align: center;
+      font-size: clamp(14px, 2.5vw, 20px);
+      font-weight: 700;
+      color: #777;
+      margin-bottom: 12px;
+    }
+    .dots-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .dot-circle {
+      width: clamp(28px, 5vw, 40px);
+      height: clamp(28px, 5vw, 40px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: clamp(12px, 2vw, 16px);
+      font-weight: 700;
+      animation: fadeInScale 0.4s ease forwards;
+      opacity: 0;
+    }
+
+    /* ===== BIG POPUP ===== */
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      z-index: 500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .popup-overlay.show { display: flex; }
+    .popup-box {
+      background: #fff;
+      border-radius: 24px;
+      padding: clamp(24px, 5vw, 48px);
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      max-width: 350px;
+      width: 90%;
+      animation: pop 0.4s ease forwards;
+    }
+    .popup-box .popup-emoji {
+      font-size: clamp(48px, 10vw, 80px);
+      display: block;
+      margin-bottom: 10px;
+    }
+    .popup-box .popup-word {
+      font-size: clamp(28px, 6vw, 48px);
+      font-weight: 800;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .popup-box .popup-sub {
+      font-size: clamp(16px, 3vw, 22px);
+      color: #999;
+    }
+
+    /* ===== NUMBER POP ===== */
+    .number-pop-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 400;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .number-pop-overlay.show { display: flex; }
+    .number-pop-text {
+      font-size: clamp(60px, 15vw, 120px);
+      font-weight: 900;
+      color: #fff;
+      text-shadow: 4px 4px 12px rgba(0,0,0,0.3);
+      animation: numberPop 0.6s ease forwards;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 24px 16px 32px;
+      color: rgba(255,255,255,0.75);
+    }
+    .footer p {
+      font-size: clamp(16px, 3vw, 22px);
+      font-weight: 700;
+    }
+    .footer .footer-emojis {
+      font-size: clamp(20px, 4vw, 30px);
+      margin-top: 8px;
+    }
+    .footer .footer-emojis span {
+      display: inline-block;
+      animation: bounce 1.5s ease-in-out infinite;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 380px) {
+      .tab-bar { gap: 8px; }
+      .tab-btn { padding: 10px 16px; font-size: 13px; }
+      .card-box { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Stars Background -->
+  <div class="floating-stars" id="floatingStars"></div>
+
+  <!-- Clouds Background -->
+  <div class="clouds" id="clouds"></div>
+
+  <!-- Confetti Container -->
+  <div class="confetti-container" id="confettiContainer"></div>
+
+  <!-- Popup Overlay -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup-box">
+      <span class="popup-emoji" id="popupEmoji"></span>
+      <span class="popup-word" id="popupWord"></span>
+      <span class="popup-sub">Starts with Q!</span>
+    </div>
+  </div>
+
+  <!-- Number Pop Overlay -->
+  <div class="number-pop-overlay" id="numberPopOverlay">
+    <div class="number-pop-text" id="numberPopText"></div>
+  </div>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="header-emojis">
+      <span style="animation-delay:0s">🌈</span>
+      <span style="animation-delay:0.15s">🎨</span>
+      <span style="animation-delay:0.3s">✏️</span>
+      <span style="animation-delay:0.45s">📚</span>
+      <span style="animation-delay:0.6s">🎓</span>
+    </div>
+    <h1>
+      <span style="animation-delay:0s">ن</span><span style="animation-delay:0.2s">ش</span><span style="animation-delay:0.4s">ا</span><span style="animation-delay:0.6s">ط</span><span style="animation-delay:0.8s">ي</span>
+      <span> </span>
+      <span style="animation-delay:1s">ت</span><span style="animation-delay:1.2s">ع</span><span style="animation-delay:1.4s">ل</span><span style="animation-delay:1.6s">ي</span><span style="animation-delay:1.8s">م</span><span style="animation-delay:2s">ي</span>
+    </h1>
+    <p>هيا نتعلم معاً بمرح! 🎈🎉</p>
+  </header>
+
+  <!-- ===== TAB BAR ===== -->
+  <nav class="tab-bar">
+    <button class="tab-btn tab-ba active" onclick="switchTab('ba')">
+      <span class="tab-emoji">By</span> حرف الباء
+    </button>
+    <button class="tab-btn tab-qq" onclick="switchTab('qq')">
+      <span class="tab-emoji">Qq</span> Letter Qq
+    </button>
+    <button class="tab-btn tab-num" onclick="switchTab('num')">
+      <span class="tab-emoji">15</span> الرقم 15
+    </button>
+  </nav>
+
+  <!-- ===== CONTENT ===== -->
+  <div class="section-container">
+
+    <!-- ============ SECTION: BA ============ -->
+    <div class="section active" id="section-ba">
+
+      <!-- Main Letter Display -->
+      <div class="main-display">
+        <div style="position:relative; display:inline-block;">
+          <div class="main-letter ba-letter">ب</div>
+          <div class="sparkle-deco top">✨</div>
+          <div class="sparkle-deco bottom">✨</div>
+        </div>
+        <div class="label">حرف الباء</div>
+      </div>
+
+      <!-- Trace Letter Game -->
+      <div class="card-box">
+        <h3 class="purple">✏️ تتبع الحرف - اضغط على الزر!</h3>
+        <div class="trace-area">
+          <div style="position:relative; display:inline-block;">
+            <span class="trace-letter-bg">ب</span>
+            <span class="trace-letter-fg" id="traceLetter">ب</span>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:center; align-items:center; gap:16px; flex-wrap:wrap;">
+          <button class="trace-btn" id="traceBtn" onclick="startTrace()">✏️ اكتب الحرف</button>
+          <span class="trace-progress" id="traceProgress">التقدم: 0%</span>
+        </div>
+        <div class="trace-success" id="traceSuccess">🎉 أحسنت! أكملت الحرف! 🌟</div>
+      </div>
+
+      <!-- Words Grid -->
+      <div class="card-box">
+        <h3 class="pink">📖 كلمات تبدأ بحرف الباء - اضغط عليها!</h3>
+        <div class="words-grid" id="baWordsGrid"></div>
+      </div>
+
+    </div>
+
+    <!-- ============ SECTION: QQ ============ -->
+    <div class="section" id="section-qq">
+
+      <!-- Main Letter Display -->
+      <div class="main-display">
+        <div style="position:relative; display:inline-block;">
+          <div class="main-letter qq-letter">Qq</div>
+          <div class="sparkle-deco top">🌟</div>
+          <div class="sparkle-deco bottom">💫</div>
+        </div>
+        <div class="label">Letter Qq</div>
+      </div>
+
+      <!-- Words Grid -->
+      <div class="card-box">
+        <h3 class="blue">📖 Words starting with Q - Click them!</h3>
+        <div class="words-grid" id="qqWordsGrid" style="grid-template-columns: repeat(2, 1fr);"></div>
+      </div>
+
+      <!-- Match Game -->
+      <div class="card-box">
+        <div class="match-header">
+          <h3 class="purple">🎮 لعبة المطابقة - اضغط مرتين على نفس الكلمة!</h3>
+          <button class="reset-btn" onclick="resetMatch()">🔄 جديد</button>
+        </div>
+        <div class="match-grid" id="matchGrid"></div>
+        <div class="match-complete" id="matchComplete">🎊 ممتاز! أكملت اللعبة! 🏆</div>
+      </div>
+
+    </div>
+
+    <!-- ============ SECTION: NUM 15 ============ -->
+    <div class="section" id="section-num">
+
+      <!-- Main Number Display -->
+      <div class="main-display">
+        <div style="position:relative; display:inline-block;">
+          <div class="main-letter num-letter">15</div>
+          <div class="sparkle-deco top">🎈</div>
+          <div class="sparkle-deco bottom">🎈</div>
+        </div>
+        <div class="label">الرقم 15 - خمسة عشر</div>
+      </div>
+
+      <!-- Counting Area -->
+      <div class="card-box">
+        <h3 class="green">🔢 لنعد معاً! اضغط على كل حيوان</h3>
+        <div class="count-grid" id="countGrid"></div>
+        <div class="counter-display">
+          <div class="counter-inner">
+            <span style="font-size:clamp(20px,4vw,30px)">🔢</span>
+            <span class="counter-number" id="counterNumber">0</span>
+            <span class="counter-total">/ 15</span>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn-count green" id="countBtn" onclick="incrementCount()">👆 عِد معي!</button>
+          <button class="btn-count red" onclick="resetCount()">🔄 ابدأ من جديد</button>
+        </div>
+        <div class="count-complete" id="countComplete">🎊🎉 ممتاز! أنت نجم العد! ⭐🌟</div>
+      </div>
+
+      <!-- Number Composition -->
+      <div class="card-box">
+        <h3 class="teal">🧮 الرقم 15 = 10 + 5</h3>
+        <div class="composition">
+          <div class="comp-box">
+            <div class="comp-number teal">10</div>
+            <div class="comp-label" style="color:#00897b">عشرة</div>
+          </div>
+          <div class="comp-op">+</div>
+          <div class="comp-box">
+            <div class="comp-number pink">5</div>
+            <div class="comp-label" style="color:#c62828">خمسة</div>
+          </div>
+          <div class="comp-op">=</div>
+          <div class="comp-box">
+            <div class="comp-number gradient">15</div>
+            <div class="comp-label" style="color:#6a1b9a">خمسة عشر</div>
+          </div>
+        </div>
+
+        <!-- Dots -->
+        <div class="dots-section">
+          <div class="dots-label">⚪⚪⚪⚪⚪⚪⚪⚪⚪⚪ + ⚪⚪⚪⚪⚪ = 15 ⚪</div>
+          <div class="dots-container" id="dotsContainer"></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <p>🌟 استمر في التعلم يا بطل! 🌟</p>
+    <div class="footer-emojis">
+      <span style="animation-delay:0s">🦁</span>
+      <span style="animation-delay:0.1s">🐻</span>
+      <span style="animation-delay:0.2s">🦊</span>
+      <span style="animation-delay:0.3s">🐼</span>
+      <span style="animation-delay:0.4s">🐨</span>
+      <span style="animation-delay:0.5s">🐸</span>
+      <span style="animation-delay:0.6s">🐵</span>
+    </div>
+  </footer>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // ============ DATA ============
+    var baWords = [
+      { word: "باب", emoji: "🚪", color: "#e74c3c", bg: "#ffeaea", desc: "باب المنزل" },
+      { word: "بطة", emoji: "🦆", color: "#3498db", bg: "#e8f4fd", desc: "البطة السابحة" },
+      { word: "بيت", emoji: "🏠", color: "#2ecc71", bg: "#e8fdf5", desc: "البيت الجميل" },
+      { word: "بحر", emoji: "🌊", color: "#006994", bg: "#e0f7fa", desc: "البحر الأزرق" },
+      { word: "كمثرى", emoji: "🍐", color: "#27ae60", bg: "#eafaf1", desc: "فاكهة الكمثرى" },
+      { word: "بطيخ", emoji: "🍉", color: "#e74c3c", bg: "#ffeaea", desc: "البطيخ الأحمر" },
+      { word: "بقرة", emoji: "🐄", color: "#8e44ad", bg: "#f4ecf7", desc: "البقرة اللطيفة" },
+      { word: "بصل", emoji: "🧅", color: "#f39c12", bg: "#fef9e7", desc: "البصل الصحي" }
+    ];
+
+    var qqWords = [
+      { word: "Queen", emoji: "👑", color: "#9b59b6", bg: "#f4ecf7", desc: "الملكة 👸" },
+      { word: "Question", emoji: "❓", color: "#2980b9", bg: "#ebf5fb", desc: "سؤال ❓" },
+      { word: "Quiet", emoji: "🤫", color: "#27ae60", bg: "#eafaf1", desc: "هادئ 🤫" },
+      { word: "Quilt", emoji: "🧵", color: "#e67e22", bg: "#fef5e7", desc: "بطانية 🧵" },
+      { word: "Quick", emoji: "⚡", color: "#f1c40f", bg: "#fef9e7", desc: "سريع ⚡" },
+      { word: "Quiz", emoji: "📝", color: "#1abc9c", bg: "#e8f8f5", desc: "اختبار 📝" }
+    ];
+
+    var animalEmojis = ["🐦","🐶","🐱","🐰","🦊","🐻","🐼","🐨","🦁","🐸","🐵","🐔","🐧","🦋","🐝"];
+
+    var confettiColors = [
+      "#ff6b6b","#ffd93d","#6bcb77","#4d96ff",
+      "#ff9ff3","#54a0ff","#5f27cd","#01a3a4",
+      "#f368e0","#ff9f43","#ee5a24","#0abde3"
+    ];
+
+    var dotColors = [
+      "#ff6b6b","#ffd93d","#6bcb77","#4d96ff","#ff9ff3",
+      "#54a0ff","#5f27cd","#01a3a4","#f368e0","#ff9f43",
+      "#e74c3c","#3498db","#2ecc71","#9b59b6","#f39c12"
+    ];
+
+    // ============ STATE ============
+    var traceInterval = null;
+    var tracePercent = 0;
+    var currentCount = 0;
+    var matchSelected = null;
+    var matchedWords = [];
+    var shuffledMatchWords = [];
+
+    // ============ INIT ============
+    document.addEventListener("DOMContentLoaded", function() {
+      createStars();
+      createClouds();
+      renderBaWords();
+      renderQqWords();
+      initMatchGame();
+      renderCountGrid();
+      renderDots();
+    });
+
+    // ============ FLOATING STARS ============
+    function createStars() {
+      var container = document.getElementById("floatingStars");
+      var emojis = ["⭐","🌟","✨","💫","🌟"];
+      for (var i = 0; i < 15; i++) {
+        var span = document.createElement("span");
+        span.textContent = emojis[i % emojis.length];
+        span.style.left = ((i * 37 + 13) % 100) + "%";
+        span.style.top = ((i * 53 + 7) % 100) + "%";
+        span.style.fontSize = (((i * 7 + 12) % 20) + 12) + "px";
+        span.style.animationDelay = (((i * 11) % 30) / 10) + "s";
+        span.style.animationDuration = ((((i * 3) % 20) / 10) + 2) + "s";
+        container.appendChild(span);
+      }
+    }
+
+    // ============ CLOUDS ============
+    function createClouds() {
+      var container = document.getElementById("clouds");
+      var sizes = [40, 55, 70];
+      for (var i = 0; i < 3; i++) {
+        var span = document.createElement("span");
+        span.textContent = "☁️";
+        span.style.top = (10 + i * 25) + "%";
+        span.style.fontSize = sizes[i] + "px";
+        span.style.animationDuration = (25 + i * 10) + "s";
+        span.style.animationDelay = (i * 5) + "s";
+        container.appendChild(span);
+      }
+    }
+
+    // ============ CONFETTI ============
+    function launchConfetti() {
+      var container = document.getElementById("confettiContainer");
+      container.innerHTML = "";
+      for (var i = 0; i < 30; i++) {
+        var piece = document.createElement("div");
+        piece.className = "confetti-piece";
+        piece.style.left = ((i * 31 + 17) % 100) + "%";
+        piece.style.width = (((i * 3 + 6) % 10) + 6) + "px";
+        piece.style.height = (((i * 3 + 6) % 10) + 6) + "px";
+        piece.style.backgroundColor = confettiColors[i % confettiColors.length];
+        piece.style.borderRadius = (i % 2 === 0) ? "50%" : "2px";
+        piece.style.animation = "confettiFall " + (((i * 7) % 10) / 10 + 1) + "s ease-in " + (((i * 17) % 50) / 100) + "s forwards";
+        container.appendChild(piece);
+      }
+      setTimeout(function() { container.innerHTML = ""; }, 2500);
+    }
+
+    // ============ TABS ============
+    function switchTab(tab) {
+      // Update buttons
+      var buttons = document.querySelectorAll(".tab-btn");
+      buttons.forEach(function(btn) { btn.classList.remove("active"); });
+      if (tab === "ba") document.querySelector(".tab-ba").classList.add("active");
+      else if (tab === "qq") document.querySelector(".tab-qq").classList.add("active");
+      else document.querySelector(".tab-num").classList.add("active");
+
+      // Update sections
+      var sections = document.querySelectorAll(".section");
+      sections.forEach(function(s) { s.classList.remove("active"); });
+      document.getElementById("section-" + tab).classList.add("active");
+    }
+
+    // ============ BA WORDS ============
+    function renderBaWords() {
+      var grid = document.getElementById("baWordsGrid");
+      grid.innerHTML = "";
+      baWords.forEach(function(w, i) {
+        var card = document.createElement("div");
+        card.className = "word-card";
+        card.style.backgroundColor = w.bg;
+        card.style.animation = "slideUp 0.5s ease " + (i * 0.08) + "s both";
+        card.innerHTML =
+          '<div class="star-badge">⭐</div>' +
+          '<span class="word-emoji" style="animation-delay:' + (i * 0.3) + 's">' + w.emoji + '</span>' +
+          '<span class="word-text" style="color:' + w.color + '">' + w.word + '</span>' +
+          '<span class="word-desc">' + w.desc + '</span>';
+        card.addEventListener("click", function() {
+          // Remove clicked from all
+          grid.querySelectorAll(".word-card").forEach(function(c) { c.classList.remove("clicked"); });
+          card.classList.add("clicked");
+          launchConfetti();
+        });
+        grid.appendChild(card);
+      });
+    }
+
+    // ============ TRACE LETTER ============
+    function startTrace() {
+      if (traceInterval) return;
+      var btn = document.getElementById("traceBtn");
+      var fg = document.getElementById("traceLetter");
+      var progress = document.getElementById("traceProgress");
+      var success = document.getElementById("traceSuccess");
+      btn.disabled = true;
+      btn.textContent = "✏️ جاري الكتابة...";
+      success.classList.remove("show");
+      tracePercent = 0;
+
+      traceInterval = setInterval(function() {
+        tracePercent += 2;
+        if (tracePercent >= 100) {
+          tracePercent = 100;
+          clearInterval(traceInterval);
+          traceInterval = null;
+          btn.disabled = false;
+          btn.textContent = "✏️ اكتب الحرف";
+          success.classList.add("show");
+          launchConfetti();
+        }
+        fg.style.clipPath = "inset(0 " + (100 - tracePercent) + "% 0 0)";
+        progress.textContent = "التقدم: " + tracePercent + "%";
+      }, 30);
+    }
+
+    // ============ QQ WORDS ============
+    function renderQqWords() {
+      var grid = document.getElementById("qqWordsGrid");
+      grid.innerHTML = "";
+      qqWords.forEach(function(w, i) {
+        var card = document.createElement("div");
+        card.className = "word-card";
+        card.style.backgroundColor = w.bg;
+        card.style.animation = "slideUp 0.5s ease " + (i * 0.08) + "s both";
+        card.innerHTML =
+          '<div class="star-badge">⭐</div>' +
+          '<span class="word-emoji" style="animation-delay:' + (i * 0.3) + 's">' + w.emoji + '</span>' +
+          '<span class="word-text" style="color:' + w.color + '">' + w.word + '</span>' +
+          '<span class="word-desc">' + w.desc + '</span>';
+        card.addEventListener("click", function() {
+          grid.querySelectorAll(".word-card").forEach(function(c) { c.classList.remove("clicked"); });
+          card.classList.add("clicked");
+          showPopup(w.emoji, w.word, w.color);
+          launchConfetti();
+        });
+        grid.appendChild(card);
+      });
+    }
+
+    // ============ POPUP ============
+    function showPopup(emoji, word, color) {
+      var overlay = document.getElementById("popupOverlay");
+      document.getElementById("popupEmoji").textContent = emoji;
+      document.getElementById("popupWord").textContent = word;
+      document.getElementById("popupWord").style.color = color;
+      overlay.classList.add("show");
+      setTimeout(function() {
+        overlay.classList.remove("show");
+      }, 2000);
+    }
+
+    // ============ MATCH GAME ============
+    function initMatchGame() {
+      matchedWords = [];
+      matchSelected = null;
+      document.getElementById("matchComplete").classList.remove("show");
+
+      // Create shuffled array (deterministic)
+      shuffledMatchWords = qqWords.concat(qqWords).slice();
+      // Simple shuffle
+      for (var i = shuffledMatchWords.length - 1; i > 0; i--) {
+        var j = ((i * 7 + 3) % (i + 1));
+        var temp = shuffledMatchWords[i];
+        shuffledMatchWords[i] = shuffledMatchWords[j];
+        shuffledMatchWords[j] = temp;
+      }
+      renderMatchGrid();
+    }
+
+    function renderMatchGrid() {
+      var grid = document.getElementById("matchGrid");
+      grid.innerHTML = "";
+      shuffledMatchWords.forEach(function(w, i) {
+        var card = document.createElement("button");
+        card.className = "match-card";
+        card.setAttribute("data-word", w.word);
+        if (matchedWords.indexOf(w.word) !== -1) {
+          card.classList.add("matched");
+        }
+        card.innerHTML =
+          '<span class="match-emoji">' + w.emoji + '</span>' +
+          '<span class="match-word">' + w.word + '</span>' +
+          '<span class="match-check">✅</span>';
+        card.addEventListener("click", function() {
+          handleMatchClick(w.word, card);
+        });
+        grid.appendChild(card);
+      });
+    }
+
+    function handleMatchClick(word, card) {
+      if (matchedWords.indexOf(word) !== -1) return;
+
+      if (!matchSelected) {
+        matchSelected = word;
+        // Highlight all cards with same word
+        document.querySelectorAll(".match-card").forEach(function(c) {
+          c.classList.remove("selected");
+          if (c.getAttribute("data-word") === word) {
+            c.classList.add("selected");
+          }
+        });
+      } else if (matchSelected === word) {
+        // Match found!
+        matchedWords.push(word);
+        matchSelected = null;
+        document.querySelectorAll(".match-card").forEach(function(c) { c.classList.remove("selected"); });
+        document.querySelectorAll(".match-card").forEach(function(c) {
+          if (c.getAttribute("data-word") === word) {
+            c.classList.add("matched");
+          }
+        });
+        launchConfetti();
+
+        if (matchedWords.length === qqWords.length) {
+          setTimeout(function() {
+            document.getElementById("matchComplete").classList.add("show");
+            launchConfetti();
+          }, 300);
+        }
+      } else {
+        // No match
+        matchSelected = null;
+        document.querySelectorAll(".match-card").forEach(function(c) { c.classList.remove("selected"); });
+      }
+    }
+
+    function resetMatch() {
+      initMatchGame();
+    }
+
+    // ============ COUNTING ============
+    function renderCountGrid() {
+      var grid = document.getElementById("countGrid");
+      grid.innerHTML = "";
+      for (var i = 0; i < 15; i++) {
+        var cell = document.createElement("button");
+        cell.className = "count-cell hidden-cell";
+        cell.setAttribute("data-index", i);
+        cell.innerHTML = '<span>•••</span>';
+        (function(idx) {
+          cell.addEventListener("click", function() {
+            if (idx === currentCount) {
+              incrementCount();
+            }
+          });
+        })(i);
+        grid.appendChild(cell);
+      }
+      updateCountDisplay();
+    }
+
+    function incrementCount() {
+      if (currentCount >= 15) return;
+      currentCount++;
+      showNumberPop(currentCount);
+
+      var cells = document.querySelectorAll(".count-cell");
+      for (var i = 0; i < cells.length; i++) {
+        var idx = parseInt(cells[i].getAttribute("data-index"));
+        if (idx < currentCount) {
+          cells[i].className = "count-cell visible";
+          cells[i].innerHTML = '<span>' + animalEmojis[idx] + '</span>';
+        } else if (idx === currentCount) {
+          cells[i].className = "count-cell next";
+          cells[i].innerHTML = '<span>❓</span>';
+        } else {
+          cells[i].className = "count-cell hidden-cell";
+          cells[i].innerHTML = '<span>•••</span>';
+        }
+      }
+      updateCountDisplay();
+
+      if (currentCount === 15) {
+        document.getElementById("countBtn").disabled = true;
+        document.getElementById("countBtn").textContent = "🎉 أكملت العد!";
+        document.getElementById("countComplete").classList.add("show");
+        launchConfetti();
+        setTimeout(launchConfetti, 500);
+        setTimeout(launchConfetti, 1000);
+      }
+    }
+
+    function resetCount() {
+      currentCount = 0;
+      document.getElementById("countBtn").disabled = false;
+      document.getElementById("countBtn").textContent = "👆 عِد معي!";
+      document.getElementById("countComplete").classList.remove("show");
+      renderCountGrid();
+    }
+
+    function updateCountDisplay() {
+      document.getElementById("counterNumber").textContent = currentCount;
+    }
+
+    function showNumberPop(num) {
+      var overlay = document.getElementById("numberPopOverlay");
+      document.getElementById("numberPopText").textContent = num;
+      overlay.classList.add("show");
+      setTimeout(function() {
+        overlay.classList.remove("show");
+      }, 600);
+    }
+
+    // ============ DOTS ============
+    function renderDots() {
+      var container = document.getElementById("dotsContainer");
+      container.innerHTML = "";
+      for (var i = 0; i < 15; i++) {
+        var dot = document.createElement("div");
+        dot.className = "dot-circle";
+        dot.style.backgroundColor = dotColors[i];
+        dot.style.animationDelay = (i * 0.1) + "s";
+        dot.textContent = i + 1;
+        container.appendChild(dot);
+      }
+    }
+
+    // ============ SOUND EFFECTS (Web Audio API) ============
+    var audioCtx = null;
+    function playSound(freq, duration) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        var osc = audioCtx.createOscillator();
+        var gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.value = freq;
+        osc.type = "sine";
+        gain.gain.value = 0.15;
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch(e) {}
+    }
+
+    // Add click sounds
+    document.addEventListener("click", function(e) {
+      if (e.target.closest(".word-card") || e.target.closest(".match-card") ||
+          e.target.closest(".count-cell") || e.target.closest(".tab-btn") ||
+          e.target.closest(".trace-btn") || e.target.closest(".btn-count")) {
+        var sounds = [523, 587, 659, 698, 784, 880, 988, 1047];
+        var idx = Math.floor(Date.now() / 100) % sounds.length;
+        playSound(sounds[idx], 0.15);
+      }
+    });
+  </script>
+
+</body>
+</html>
