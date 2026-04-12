@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تعلم حرف الباء وحرف Q والرقم 15</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            color: #fff;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .section-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 25px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .section-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .section-card h2 {
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            margin-bottom: 15px;
+        }
+
+        .section-card:nth-child(1) h2 { color: #e74c3c; }
+        .section-card:nth-child(2) h2 { color: #3498db; }
+        .section-card:nth-child(3) h2 { color: #2ecc71; }
+        .section-card:nth-child(4) h2 { color: #9b59b6; }
+
+        .section-card p {
+            color: #666;
+            font-size: clamp(0.9rem, 3vw, 1.1rem);
+        }
+
+        .letter-display {
+            font-size: clamp(4rem, 15vw, 8rem);
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .baa { color: #e74c3c; }
+        .qq { color: #3498db; }
+        .number { color: #9b59b6; }
+
+        .interactive-area {
+            display: none;
+            background: rgba(255,255,255,0.95);
+            border-radius: 25px;
+            padding: 30px;
+            margin-top: 20px;
+            animation: slideIn 0.5s ease;
+        }
+
+        .interactive-area.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            float: left;
+            transition: all 0.3s ease;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .close-btn:hover {
+            background: #c0392b;
+            transform: scale(1.1);
+        }
+
+        .words-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .word-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .word-card:hover {
+            transform: rotate(5deg) scale(1.1);
+            border-color: #667eea;
+            box-shadow: 0 10px 25px rgba(102,126,234,0.4);
+        }
+
+        .word-card .word {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .word-card .icon {
+            font-size: clamp(2rem, 6vw, 3rem);
+            margin-bottom: 10px;
+        }
+
+        .number-pad {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        .num-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .num-btn:hover {
+            transform: scale(1.15) rotate(10deg);
+        }
+
+        .display-number {
+            font-size: clamp(4rem, 15vw, 8rem);
+            font-weight: 900;
+            color: #9b59b6;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+        }
+
+        .message.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .message h3 {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            color: #2ecc71;
+            margin-bottom: 15px;
+        }
+
+        .message .emoji {
+            font-size: 4rem;
+            animation: bounce 0.5s infinite;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        .counting-game {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .count-item {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .count-item:nth-child(2) { animation-delay: 0.2s; }
+        .count-item:nth-child(3) { animation-delay: 0.4s; }
+        .count-item:nth-child(4) { animation-delay: 0.6s; }
+        .count-item:nth-child(5) { animation-delay: 0.8s; }
+        .count-item:nth-child(6) { animation-delay: 1s; }
+        .count-item:nth-child(7) { animation-delay: 1.2s; }
+        .count-item:nth-child(8) { animation-delay: 1.4s; }
+        .count-item:nth-child(9) { animation-delay: 1.6s; }
+        .count-item:nth-child(10) { animation-delay: 1.8s; }
+        .count-item:nth-child(11) { animation-delay: 2s; }
+        .count-item:nth-child(12) { animation-delay: 2.2s; }
+        .count-item:nth-child(13) { animation-delay: 2.4s; }
+        .count-item:nth-child(14) { animation-delay: 2.6s; }
+        .count-item:nth-child(15) { animation-delay: 2.8s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .click-counter {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .click-btn {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Cairo', sans-serif;
+            font-weight: bold;
+        }
+
+        .click-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(56,239,125,0.5);
+        }
+
+        .click-btn:active {
+            transform: scale(0.95);
+        }
+
+        .click-count {
+            font-size: clamp(3rem, 10vw, 5rem);
+            font-weight: 900;
+            color: #11998e;
+            margin-top: 20px;
+        }
+
+        .click-instruction {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            color: #666;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 10px; }
+            .section-card { padding: 15px; }
+            .number-pad { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎈 تعلم  🎈</h1>
+        </header>
+
+        <div class="sections">
+            <div class="section-card" onclick="showSection('baa')">
+                <div class="letter-display baa">ب</div>
+                <h2>حرف الباء</h2>
+                <p>اضغط لتتعلم كلمات تبدأ بحرف الباء</p>
+            </div>
+
+            <div class="section-card" onclick="showSection('letters')">
+                <div class="letter-display" style="color:#3498db">أ - ت - ن</div>
+                <h2>أحرف أخرى</h2>
+                <p>تعلم كلمات بأحرف مختلفة</p>
+            </div>
+
+            <div class="section-card" onclick="showSection('qq')">
+                <div class="letter-display qq">Q</div>
+                <h2>حرف Q</h2>
+                <p>تعلم كلمات تبدأ بحرف Q</p>
+            </div>
+
+            <div class="section-card" onclick="showSection('number')">
+                <div class="letter-display number">15</div>
+                <h2>الرقم 15</h2>
+                <p>تعلم عد الرقم 15</p>
+            </div>
+        </div>
+
+        <div class="interactive-area" id="baa-section">
+            <button class="close-btn" onclick="hideSection()">✕ إغلاق</button>
+            <h2 style="text-align:center; color:#e74c3c; margin-bottom:20px;">كلمات تبدأ بحرف الباء</h2>
+            <div class="words-grid">
+                <div class="word-card" onclick="showMessage('🎉 ممتاز! 🎉', 'بيت')">
+                    <div class="icon">🏠</div>
+                    <div class="word">بيت</div>
+                </div>
+                <div class="word-card" onclick="showMessage('🎉 أحسنت! 🎉', 'باب')">
+                    <div class="icon">🚪</div>
+                    <div class="word">باب</div>
+                </div>
+                <div class="word-card" onclick="showMessage('🎉 رائع! 🎉', 'بطة')">
+                    <div class="icon">🦆</div>
+                    <div class="word">بطة</div>
+                </div>
+        
+            </div>
+        </div>
+
+        <div class="interactive-area" id="letters-section">
+            <button class="close-btn" onclick="hideSection()">✕ إغلاق</button>
+            <h2 style="text-align:center; color:#3498db; margin-bottom:20px;">كلمات بأحرف مختلفة</h2>
+            <div class="words-grid">
+                <div class="word-card" onclick="showMessage('🎉 رائع! 🎉', 'أب')">
+                    <div class="icon">👨</div>
+                    <div class="word">أب</div>
+                </div>
+                <div class="word-card" onclick="showMessage('🎉 ممتاز! 🎉', 'تفاحة')">
+                    <div class="icon">🍎</div>
+                    <div class="word">تفاحة</div>
+                </div>
+                <div class="word-card" onclick="showMessage('🎉 أحسنت! 🎉', 'نجمة')">
+                    <div class="icon">⭐</div>
+                    <div class="word">نجمة</div>
+                </div>
+                <div class="word-card" onclick="showMessage('🎉 جيد! 🎉', 'تين')">
+                    <div class="icon">🍇</div>
+                    <div class="word">تين</div>
+                </div>
+                <div class="word-card" onclick="showMessage('🎉 برافو! 🎉', 'تانتو')">
+                    <div class="icon">🎨</div>
+                    <div class="word">تانتو</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="interactive-area" id="qq-section">
+            <button class="close-btn" onclick="hideSection()">✕ إغلاق</button>
+            <h2 style="text-align:center; color:#3498db; margin-bottom:20px;">كلمات تبدأ بحرف Q</h2>
+            <div class="words-grid">
+                <div class="word-card" onclick="showMessage('🎉 Great! 🎉', 'Queen')">
+                    <div class="icon">👑</div>
+                    <div class="word">Queen</div>
+                </div>
+                <div class="word-card" onclick="showMessage('🎉 Good! 🎉', 'Quiz')">
+                    <div class="icon">❓</div>
+                    <div class="word">Quiz</div>
+                </div>
+                <div class="word-card" onclick="showMessage('🎉 Nice! 🎉', 'Quarter')">
+                    <div class="icon">🪙</div>
+                    <div class="word">Quarter</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="interactive-area" id="number-section">
+            <button class="close-btn" onclick="hideSection()">✕ إغلاق</button>
+            <h2 style="text-align:center; color:#9b59b6; margin-bottom:20px;">الرقم 15</h2>
+            
+            <div class="display-number">15</div>
+            
+            <div class="counting-game">
+                <div class="count-item">1</div>
+                <div class="count-item">2</div>
+                <div class="count-item">3</div>
+                <div class="count-item">4</div>
+                <div class="count-item">5</div>
+                <div class="count-item">6</div>
+                <div class="count-item">7</div>
+                <div class="count-item">8</div>
+                <div class="count-item">9</div>
+                <div class="count-item">10</div>
+                <div class="count-item">11</div>
+                <div class="count-item">12</div>
+                <div class="count-item">13</div>
+                <div class="count-item">14</div>
+                <div class="count-item">15</div>
+            </div>
+
+            <div class="click-counter">
+                <p class="click-instruction">اضغط على الزر حتى يصل العدد إلى 15</p>
+                <button class="click-btn" onclick="incrementCount()">اضغط +1</button>
+                <div class="click-count" id="clickCount">0</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="hideMessage()"></div>
+    <div class="message" id="message">
+        <div class="emoji">⭐</div>
+        <h3 id="message-text">🎉 ممتاز! 🎉</h3>
+        <p id="message-word" style="font-size:2rem; color:#333;"></p>
+    </div>
+
+    <script>
+        let clickCounter = 0;
+        const targetCount = 15;
+
+        function showSection(section) {
+            document.querySelectorAll('.interactive-area').forEach(el => el.classList.remove('active'));
+            
+            if (section === 'baa') {
+                document.getElementById('baa-section').classList.add('active');
+            } else if (section === 'letters') {
+                document.getElementById('letters-section').classList.add('active');
+            } else if (section === 'qq') {
+                document.getElementById('qq-section').classList.add('active');
+            } else if (section === 'number') {
+                document.getElementById('number-section').classList.add('active');
+            }
+            
+            window.scrollTo({
+                top: 400,
+                behavior: 'smooth'
+            });
+        }
+
+        function hideSection() {
+            document.querySelectorAll('.interactive-area').forEach(el => el.classList.remove('active'));
+        }
+
+        function showMessage(text, word) {
+            document.getElementById('message-text').textContent = text;
+            document.getElementById('message-word').textContent = word;
+            document.getElementById('overlay').classList.add('show');
+            document.getElementById('message').classList.add('show');
+            
+            setTimeout(() => {
+                hideMessage();
+            }, 2000);
+        }
+
+        function hideMessage() {
+            document.getElementById('overlay').classList.remove('show');
+            document.getElementById('message').classList.remove('show');
+        }
+
+        function incrementCount() {
+            if (clickCounter < targetCount) {
+                clickCounter++;
+                document.getElementById('clickCount').textContent = clickCounter;
+                
+                if (clickCounter === targetCount) {
+                    setTimeout(() => {
+                        showMessage('🎉🎉 ألف مبروك! 🎉🎉', '15');
+                    }, 300);
+                }
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                hideSection();
+                hideMessage();
+            }
+        });
+    </script>
+</body>
+</html>
