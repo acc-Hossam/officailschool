@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>لعبة المقارنة: أكبر، أصغر، يساوي - بالصوت</title>
-    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>Compare Numbers: Greater, Less, Equal - Voice Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;600;700;800&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -39,7 +39,7 @@
 
         body {
             background: linear-gradient(160deg, #1565C0, #42A5F5, #81D4FA, #B3E5FC);
-            font-family: 'Changa', 'Segoe UI', 'Comic Neue', cursive, sans-serif;
+            font-family: 'Inter', 'Changa', 'Segoe UI', 'Comic Neue', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -50,7 +50,7 @@
             position: relative;
         }
 
-        /* ===== Floating Bubbles Background ===== */
+        /* Floating Bubbles Background */
         .bubbles-container {
             position: fixed;
             top: 0;
@@ -86,7 +86,7 @@
             }
         }
 
-        /* ===== Confetti ===== */
+        /* Confetti */
         .confetti-container {
             position: fixed;
             top: 0;
@@ -117,7 +117,7 @@
             }
         }
 
-        /* ===== Stars Rain ===== */
+        /* Stars Rain */
         .stars-container {
             position: fixed;
             top: 0;
@@ -150,7 +150,7 @@
             }
         }
 
-        /* ===== Main Game Box ===== */
+        /* Main Game Box */
         .game-box {
             max-width: 900px;
             width: 100%;
@@ -168,7 +168,6 @@
             backdrop-filter: blur(10px);
         }
 
-        /* ===== Header ===== */
         h1 {
             font-size: 2rem;
             color: #E65100;
@@ -196,7 +195,7 @@
             box-shadow: 0 3px 0 #FFE082;
         }
 
-        /* ===== Mascot ===== */
+        /* Mascot */
         .mascot {
             font-size: 2.5rem;
             margin: 5px 0;
@@ -235,7 +234,7 @@
             75% { transform: rotate(5deg); }
         }
 
-        /* ===== Settings Row ===== */
+        /* Settings Row */
         .settings-row {
             display: flex;
             flex-wrap: wrap;
@@ -279,10 +278,6 @@
             transform: none;
         }
 
-        .diff-btn:active {
-            transform: none;
-        }
-
         .sound-toggle {
             width: 42px;
             height: 42px;
@@ -301,7 +296,7 @@
             box-shadow: 0 2px 0 #6A1B9A;
         }
 
-        /* ===== Numbers Area ===== */
+        /* Numbers Area */
         .numbers-area {
             display: flex;
             flex-wrap: wrap;
@@ -333,13 +328,8 @@
             text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.5);
         }
 
-        .number-card:nth-child(1) {
-            animation-delay: 0s;
-        }
-
-        .number-card:nth-child(3) {
-            animation-delay: 1.5s;
-        }
+        .number-card:nth-child(1) { animation-delay: 0s; }
+        .number-card:nth-child(3) { animation-delay: 1.5s; }
 
         @keyframes cardBounce {
             0%, 100% { transform: translateY(0); }
@@ -349,10 +339,7 @@
         .number-card.correct-flash {
             animation: correctPulse 0.6s ease-out;
             background: linear-gradient(145deg, #C8E6C9, #81C784, #66BB6A);
-            box-shadow:
-                0 12px 0 #2E7D32,
-                0 14px 20px rgba(0, 0, 0, 0.15),
-                0 0 30px rgba(102, 187, 106, 0.5);
+            box-shadow: 0 12px 0 #2E7D32, 0 14px 20px rgba(0, 0, 0, 0.15), 0 0 30px rgba(102, 187, 106, 0.5);
             color: #1B5E20;
             border-color: #66BB6A;
         }
@@ -378,7 +365,7 @@
             90% { transform: translateX(4px) rotate(1deg); }
         }
 
-        /* ===== VS Badge ===== */
+        /* VS Badge */
         .vs {
             font-size: 1.6rem;
             font-weight: 800;
@@ -390,10 +377,7 @@
             align-items: center;
             justify-content: center;
             color: white;
-            box-shadow:
-                0 6px 0 #BF360C,
-                0 8px 15px rgba(0, 0, 0, 0.2),
-                inset 0 2px 0 rgba(255, 255, 255, 0.3);
+            box-shadow: 0 6px 0 #BF360C, 0 8px 15px rgba(0, 0, 0, 0.2), inset 0 2px 0 rgba(255, 255, 255, 0.3);
             animation: vsPulse 2s ease-in-out infinite;
             text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
             flex-shrink: 0;
@@ -405,7 +389,7 @@
             75% { transform: scale(1.08) rotate(-3deg); }
         }
 
-        /* ===== Choices Area ===== */
+        /* Choices Area */
         .choices-area {
             margin: 12px 0 8px;
         }
@@ -473,12 +457,7 @@
             border-color: #A5D6A7;
             color: #1B5E20;
         }
-        .choice-card[data-choice="greater"]:active {
-            box-shadow: 0 3px 0 #2E7D32;
-        }
-        .choice-card[data-choice="greater"] .symbol {
-            color: #1B5E20;
-        }
+        .choice-card[data-choice="greater"] .symbol { color: #1B5E20; }
         .choice-card[data-choice="greater"] .english {
             background: rgba(255, 255, 255, 0.3);
             color: #1B5E20;
@@ -491,12 +470,7 @@
             border-color: #90CAF9;
             color: #0D47A1;
         }
-        .choice-card[data-choice="less"]:active {
-            box-shadow: 0 3px 0 #1565C0;
-        }
-        .choice-card[data-choice="less"] .symbol {
-            color: #0D47A1;
-        }
+        .choice-card[data-choice="less"] .symbol { color: #0D47A1; }
         .choice-card[data-choice="less"] .english {
             background: rgba(255, 255, 255, 0.3);
             color: #0D47A1;
@@ -509,12 +483,7 @@
             border-color: #E1BEE7;
             color: #4A148C;
         }
-        .choice-card[data-choice="equal"]:active {
-            box-shadow: 0 3px 0 #6A1B9A;
-        }
-        .choice-card[data-choice="equal"] .symbol {
-            color: #4A148C;
-        }
+        .choice-card[data-choice="equal"] .symbol { color: #4A148C; }
         .choice-card[data-choice="equal"] .english {
             background: rgba(255, 255, 255, 0.3);
             color: #4A148C;
@@ -558,7 +527,7 @@
             animation: shakeCard 0.5s ease-out;
         }
 
-        /* ===== Action Buttons ===== */
+        /* Action Buttons */
         .action-buttons {
             display: flex;
             flex-wrap: wrap;
@@ -583,7 +552,6 @@
         .new-numbers {
             background: linear-gradient(145deg, #4DB6AC, #26A69A);
             box-shadow: 0 5px 0 #00695C, 0 7px 12px rgba(0, 0, 0, 0.12);
-            font-size: 1.1rem;
         }
 
         .new-numbers:active {
@@ -601,7 +569,7 @@
             box-shadow: 0 2px 0 #BF360C;
         }
 
-        /* ===== Score Area ===== */
+        /* Score Area */
         .score-area {
             display: flex;
             flex-wrap: wrap;
@@ -622,7 +590,6 @@
             font-weight: 700;
         }
 
-        /* ===== Streak ===== */
         .streak-display {
             display: inline-flex;
             align-items: center;
@@ -641,7 +608,7 @@
             100% { transform: scale(1.1); text-shadow: 0 0 10px rgba(255, 109, 0, 0.5); }
         }
 
-        /* ===== Stars Progress ===== */
+        /* Stars Progress */
         .stars-progress {
             display: flex;
             justify-content: center;
@@ -666,7 +633,7 @@
             100% { transform: scale(1) rotate(360deg); }
         }
 
-        /* ===== Feedback ===== */
+        /* Feedback */
         .feedback {
             background: linear-gradient(135deg, #FFF9C4, #FFF176);
             padding: 12px 18px;
@@ -696,7 +663,6 @@
             color: #BF360C;
         }
 
-        /* ===== Footer ===== */
         footer {
             font-size: 0.75rem;
             color: #A1887F;
@@ -704,7 +670,7 @@
             font-weight: 600;
         }
 
-        /* ===== Speaking indicator ===== */
+        /* Speaking indicator */
         .speaking-indicator {
             display: inline-block;
             width: 8px;
@@ -720,218 +686,50 @@
             100% { transform: scale(1.2); opacity: 1; }
         }
 
-        /* ===== Responsive ===== */
+        /* Responsive */
         @media (max-width: 600px) {
-            body {
-                padding: 8px;
-            }
-
-            .game-box {
-                border-radius: 28px;
-                padding: 1rem 0.8rem;
-            }
-
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            .subtitle {
-                font-size: 0.8rem;
-                padding: 5px 14px;
-            }
-
-            .mascot {
-                font-size: 2rem;
-            }
-
-            .number-card {
-                width: 110px;
-                height: 125px;
-                font-size: 3.2rem;
-                border-radius: 25px;
-                box-shadow:
-                    0 10px 0 #E65100,
-                    0 12px 15px rgba(0, 0, 0, 0.12);
-            }
-
-            .vs {
-                width: 48px;
-                height: 48px;
-                font-size: 1.2rem;
-            }
-
-            .cards-choice {
-                gap: 8px;
-            }
-
-            .choice-card {
-                min-width: 90px;
-                padding: 10px 6px;
-                border-radius: 22px;
-            }
-
-            .choice-card .arabic {
-                font-size: 1.1rem;
-            }
-
-            .choice-card .symbol {
-                font-size: 1.7rem;
-            }
-
-            .choice-card .english {
-                font-size: 0.7rem;
-            }
-
-            .feedback {
-                font-size: 0.95rem;
-                padding: 10px 12px;
-                border-radius: 18px;
-            }
-
-            button {
-                padding: 8px 16px;
-                font-size: 0.95rem;
-            }
-
-            .score {
-                font-size: 0.95rem;
-            }
-
-            .diff-btn {
-                font-size: 0.75rem;
-                padding: 4px 10px;
-            }
+            .game-box { padding: 1rem 0.8rem; }
+            h1 { font-size: 1.5rem; }
+            .number-card { width: 110px; height: 125px; font-size: 3.2rem; }
+            .vs { width: 48px; height: 48px; font-size: 1.2rem; }
+            .choice-card { min-width: 90px; padding: 10px 6px; }
+            .choice-card .symbol { font-size: 1.7rem; }
         }
-
-        @media (max-width: 380px) {
-            .numbers-area {
-                gap: 10px;
-            }
-
-            .number-card {
-                width: 90px;
-                height: 105px;
-                font-size: 2.5rem;
-                border-radius: 20px;
-                box-shadow: 0 8px 0 #E65100;
-            }
-
-            .vs {
-                width: 40px;
-                height: 40px;
-                font-size: 1rem;
-            }
-
-            .choice-card {
-                min-width: 80px;
-                padding: 8px 4px;
-            }
-
-            .choice-card .arabic {
-                font-size: 1rem;
-            }
-
-            .choice-card .symbol {
-                font-size: 1.4rem;
-            }
-
-            .action-buttons {
-                gap: 8px;
-            }
-
-            button {
-                padding: 7px 14px;
-                font-size: 0.85rem;
-            }
-
-            h1 {
-                font-size: 1.3rem;
-            }
-        }
-
         @media (min-width: 768px) {
-            .game-box {
-                padding: 2rem;
-            }
-
-            h1 {
-                font-size: 2.4rem;
-            }
-
-            .number-card {
-                width: 170px;
-                height: 190px;
-                font-size: 5rem;
-            }
-
-            .vs {
-                width: 75px;
-                height: 75px;
-                font-size: 1.8rem;
-            }
-
-            .choice-card {
-                min-width: 160px;
-                padding: 16px 12px;
-            }
-
-            .choice-card .arabic {
-                font-size: 1.5rem;
-            }
-
-            .choice-card .symbol {
-                font-size: 2.5rem;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .number-card {
-                width: 190px;
-                height: 210px;
-                font-size: 5.5rem;
-            }
+            .number-card { width: 170px; height: 190px; font-size: 5rem; }
+            .vs { width: 75px; height: 75px; font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
 
-<!-- Floating Bubbles -->
 <div class="bubbles-container" id="bubblesContainer"></div>
-
-<!-- Confetti Container -->
 <div class="confetti-container" id="confettiContainer"></div>
-
-<!-- Stars Rain Container -->
 <div class="stars-container" id="starsContainer"></div>
 
-<!-- Game Box -->
 <div class="game-box">
-    <h1>🐘 مقارنة الأرقام 🦒</h1>
-    <div class="subtitle">🔊 اضغط على البطاقة - سيتم نطق الاسم بالانجليزية ثم العربية 🔊</div>
+    <h1>🐘 Compare Numbers 🦒</h1>
+    <div class="subtitle">🔊 Tap a card — hear it in English & Arabic 🔊</div>
 
-    <!-- Mascot -->
     <div class="mascot think" id="mascot">🦒</div>
 
-    <!-- Settings Row -->
     <div class="settings-row">
         <div class="difficulty-btns">
-            <button class="diff-btn active" data-max="10" onclick="setDifficulty(this, 10)">سهل</button>
-            <button class="diff-btn" data-max="20" onclick="setDifficulty(this, 20)">متوسط</button>
-            <button class="diff-btn" data-max="50" onclick="setDifficulty(this, 50)">صعب</button>
+            <button class="diff-btn active" data-max="10" onclick="setDifficulty(this, 10)">Easy</button>
+            <button class="diff-btn" data-max="20" onclick="setDifficulty(this, 20)">Medium</button>
+            <button class="diff-btn" data-max="50" onclick="setDifficulty(this, 50)">Hard</button>
         </div>
         <button class="sound-toggle" id="soundToggle" onclick="toggleSound()">🔊</button>
     </div>
 
-    <!-- Numbers -->
     <div class="numbers-area">
         <div class="number-card" id="num1Card">?</div>
         <div class="vs">VS</div>
         <div class="number-card" id="num2Card">?</div>
     </div>
 
-    <!-- Choices -->
     <div class="choices-area">
-        <div class="choices-title">🔽 اختر البطاقة الصحيحة 🔽</div>
+        <div class="choices-title">🔽 Pick the correct card 🔽</div>
         <div class="cards-choice">
             <div class="choice-card" data-choice="greater">
                 <span class="arabic">أكبر من</span>
@@ -951,49 +749,35 @@
         </div>
     </div>
 
-    <!-- Action Buttons -->
     <div class="action-buttons">
-        <button id="newNumbersBtn" class="new-numbers">🎲 رقمين جديدين</button>
-        <button id="resetScoreBtn" class="reset-score">🔄 إعادة ضبط</button>
+        <button id="newNumbersBtn" class="new-numbers">🎲 New Numbers</button>
+        <button id="resetScoreBtn" class="reset-score">🔄 Reset Score</button>
     </div>
 
-    <!-- Stars Progress -->
     <div class="stars-progress" id="starsProgress">
-        <span class="star-icon">⭐</span>
-        <span class="star-icon">⭐</span>
-        <span class="star-icon">⭐</span>
-        <span class="star-icon">⭐</span>
-        <span class="star-icon">⭐</span>
+        <span class="star-icon">⭐</span><span class="star-icon">⭐</span><span class="star-icon">⭐</span><span class="star-icon">⭐</span><span class="star-icon">⭐</span>
     </div>
 
-    <!-- Score Area -->
     <div class="score-area">
-        <div class="score">⭐ النقاط: <span id="scoreValue">0</span></div>
-        <div class="score">✅ صحيحة: <span id="correctCount">0</span></div>
+        <div class="score">⭐ Score: <span id="scoreValue">0</span></div>
+        <div class="score">✅ Correct: <span id="correctCount">0</span></div>
         <div class="streak-display" id="streakDisplay">🔥 <span id="streakValue">0</span></div>
     </div>
 
-    <!-- Feedback -->
-    <div id="feedbackMsg" class="feedback">
-        🐣 اختر البطاقة: أكبر من، أصغر من، أو يساوي 🐣
-    </div>
-
-    <footer>💡 استمع للصوت: أولاً بالانجليزية ثم بالعربية</footer>
+    <div id="feedbackMsg" class="feedback">🐣 Choose: Greater than, Less than, or Equal to 🐣</div>
+    <footer>💡 Tap a number card for a hint, or pick a relation card to answer!</footer>
 </div>
 
 <script>
-    // ===== Game Variables =====
-    let num1 = 0;
-    let num2 = 0;
-    let score = 0;
-    let correctAnswers = 0;
-    let streak = 0;
+    // Game State
+    let num1 = 0, num2 = 0;
+    let score = 0, correctAnswers = 0, streak = 0;
     let canAnswer = true;
     let isSpeaking = false;
     let soundEnabled = true;
     let maxNumber = 10;
 
-    // ===== DOM Elements =====
+    // DOM Elements
     const num1Card = document.getElementById('num1Card');
     const num2Card = document.getElementById('num2Card');
     const scoreSpan = document.getElementById('scoreValue');
@@ -1011,10 +795,10 @@
     const starsContainer = document.getElementById('starsContainer');
     const bubblesContainer = document.getElementById('bubblesContainer');
 
-    // ===== Create Floating Bubbles =====
+    // Floating bubbles
     function createBubbles() {
-        const colors = ['#FFD54F', '#FF7043', '#66BB6A', '#42A5F5', '#AB47BC', '#FF80AB', '#4DB6AC', '#FFAB40'];
-        for (let i = 0; i < 12; i++) {
+        const colors = ['#FFD54F', '#FF7043', '#66BB6A', '#42A5F5', '#AB47BC', '#FF80AB'];
+        for (let i = 0; i < 14; i++) {
             const bubble = document.createElement('div');
             bubble.className = 'bubble';
             const size = Math.random() * 80 + 30;
@@ -1028,14 +812,13 @@
         }
     }
 
-    // ===== Confetti Effect =====
+    // Confetti effect
     function launchConfetti() {
-        const colors = ['#FFD54F', '#FF7043', '#66BB6A', '#42A5F5', '#AB47BC', '#FF80AB', '#F44336', '#4DB6AC'];
-        const count = 50;
-        for (let i = 0; i < count; i++) {
+        const colors = ['#FFD54F', '#FF7043', '#66BB6A', '#42A5F5', '#AB47BC', '#F44336'];
+        for (let i = 0; i < 45; i++) {
             const piece = document.createElement('div');
             piece.className = 'confetti-piece';
-            piece.style.left = (40 + Math.random() * 20) + '%';
+            piece.style.left = (30 + Math.random() * 40) + '%';
             piece.style.top = '-10px';
             piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
             piece.style.animationDelay = (Math.random() * 0.5) + 's';
@@ -1043,35 +826,15 @@
             piece.style.width = (Math.random() * 8 + 5) + 'px';
             piece.style.height = (Math.random() * 8 + 5) + 'px';
             piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-
-            // Add horizontal spread
-            const spread = (Math.random() - 0.5) * 300;
-            piece.style.setProperty('--spread', spread + 'px');
-            piece.style.animationName = 'none';
-            piece.offsetHeight; // force reflow
-            piece.style.animationName = '';
-
-            // Custom keyframe with spread
-            piece.animate([
-                { transform: `translateY(-20px) translateX(0) rotate(0deg) scale(1)`, opacity: 1 },
-                { transform: `translateY(50vh) translateX(${spread * 0.5}px) rotate(360deg) scale(0.8)`, opacity: 1, offset: 0.5 },
-                { transform: `translateY(100vh) translateX(${spread}px) rotate(720deg) scale(0.3)`, opacity: 0 }
-            ], {
-                duration: 2000 + Math.random() * 1000,
-                easing: 'ease-out',
-                fill: 'forwards'
-            });
-
             confettiContainer.appendChild(piece);
-
             setTimeout(() => piece.remove(), 3500);
         }
     }
 
-    // ===== Stars Rain Effect =====
+    // Stars rain
     function launchStars() {
-        const starEmojis = ['⭐', '🌟', '✨', '💫', '🌠'];
-        for (let i = 0; i < 15; i++) {
+        const starEmojis = ['⭐', '🌟', '✨', '💫'];
+        for (let i = 0; i < 18; i++) {
             const star = document.createElement('div');
             star.className = 'star-piece';
             star.textContent = starEmojis[Math.floor(Math.random() * starEmojis.length)];
@@ -1083,88 +846,50 @@
         }
     }
 
-    // ===== Update Stars Progress =====
+    // Stars progress
     function updateStarsProgress() {
         const starIcons = starsProgress.querySelectorAll('.star-icon');
         const earnedStars = Math.min(5, Math.floor(score / 50));
-        starIcons.forEach((star, index) => {
-            if (index < earnedStars) {
-                if (!star.classList.contains('earned')) {
-                    star.classList.add('earned');
-                }
-            } else {
-                star.classList.remove('earned');
-            }
+        starIcons.forEach((star, idx) => {
+            if (idx < earnedStars) star.classList.add('earned');
+            else star.classList.remove('earned');
         });
     }
 
-    // ===== Speech Functions =====
+    // Speech with bilingual (English then Arabic)
     function speakText(text, lang, callback) {
         if (!window.speechSynthesis || !soundEnabled) {
             if (callback) callback();
             return;
         }
-
         window.speechSynthesis.cancel();
-
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = lang;
         utterance.rate = 0.9;
         utterance.pitch = 1.1;
-
-        if (callback) {
-            utterance.onend = callback;
-        }
-
+        if (callback) utterance.onend = callback;
         window.speechSynthesis.speak(utterance);
     }
 
     function speakChoiceName(choiceType) {
         if (!soundEnabled) return;
-        if (isSpeaking) {
-            window.speechSynthesis.cancel();
-        }
-
-        let englishText = "";
-        let arabicText = "";
-
-        switch (choiceType) {
-            case "greater":
-                englishText = "Greater than";
-                arabicText = "أكبر من";
-                break;
-            case "less":
-                englishText = "Less than";
-                arabicText = "أصغر من";
-                break;
-            case "equal":
-                englishText = "Equal to";
-                arabicText = "يساوي";
-                break;
-            default:
-                return;
-        }
-
+        if (isSpeaking) window.speechSynthesis.cancel();
+        let eng = "", ar = "";
+        if (choiceType === "greater") { eng = "Greater than"; ar = "أكبر من"; }
+        else if (choiceType === "less") { eng = "Less than"; ar = "أصغر من"; }
+        else { eng = "Equal to"; ar = "يساوي"; }
         isSpeaking = true;
-
-        speakText(englishText, "en-US", () => {
-            speakText(arabicText, "ar-SA", () => {
-                isSpeaking = false;
-            });
+        speakText(eng, "en-US", () => {
+            speakText(ar, "ar-SA", () => { isSpeaking = false; });
         });
     }
 
-    // ===== Toggle Sound =====
     function toggleSound() {
         soundEnabled = !soundEnabled;
         soundToggle.textContent = soundEnabled ? '🔊' : '🔇';
-        if (!soundEnabled) {
-            window.speechSynthesis.cancel();
-            isSpeaking = false;
-        }
+        if (!soundEnabled) { window.speechSynthesis.cancel(); isSpeaking = false; }
     }
 
-    // ===== Set Difficulty =====
     function setDifficulty(btn, max) {
         document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
@@ -1172,247 +897,142 @@
         newRandomNumbers();
     }
 
-    // ===== Mascot =====
     function setMascotMood(mood) {
         mascotEl.className = 'mascot';
-        switch (mood) {
-            case 'happy':
-                mascotEl.textContent = '🎉';
-                mascotEl.classList.add('happy');
-                break;
-            case 'sad':
-                mascotEl.textContent = '🤗';
-                mascotEl.classList.add('sad');
-                break;
-            case 'think':
-                mascotEl.textContent = '🦒';
-                mascotEl.classList.add('think');
-                break;
-        }
-        // Reset to thinking after delay
-        if (mood !== 'think') {
-            setTimeout(() => setMascotMood('think'), 2000);
-        }
+        if (mood === 'happy') { mascotEl.textContent = '🎉'; mascotEl.classList.add('happy'); }
+        else if (mood === 'sad') { mascotEl.textContent = '🤗'; mascotEl.classList.add('sad'); }
+        else { mascotEl.textContent = '🦒'; mascotEl.classList.add('think'); }
+        if (mood !== 'think') setTimeout(() => setMascotMood('think'), 2000);
     }
 
-    // ===== Generate Random Numbers =====
     function generateRandomNumbers() {
         const isEqualCase = Math.random() < 0.25;
         if (isEqualCase) {
-            let sameNum = Math.floor(Math.random() * (maxNumber + 1));
-            num1 = sameNum;
-            num2 = sameNum;
+            let same = Math.floor(Math.random() * (maxNumber + 1));
+            num1 = same; num2 = same;
         } else {
             num1 = Math.floor(Math.random() * (maxNumber + 1));
             num2 = Math.floor(Math.random() * (maxNumber + 1));
         }
-        updateNumbersDisplay();
-    }
-
-    function updateNumbersDisplay() {
         num1Card.textContent = num1;
         num2Card.textContent = num2;
-        // Reset card animations
-        num1Card.style.animation = 'none';
-        num2Card.style.animation = 'none';
-        num1Card.offsetHeight; // trigger reflow
-        num2Card.offsetHeight;
-        num1Card.style.animation = '';
-        num2Card.style.animation = '';
-        // Remove any previous classes
         num1Card.classList.remove('correct-flash', 'wrong-shake');
         num2Card.classList.remove('correct-flash', 'wrong-shake');
-    }
-
-    // ===== Check Answer =====
-    function checkAnswer(choice) {
-        if (!canAnswer) {
-            feedbackDiv.innerHTML = "⏳ اضغط على 'رقمين جديدين' أولاً ⏳";
-            feedbackDiv.className = 'feedback';
-            return;
-        }
-
-        // Speak the choice name
-        speakChoiceName(choice);
-
-        let isCorrect = false;
-        let correctRelation = "";
-
-        if (num1 > num2) {
-            correctRelation = "greater";
-        } else if (num1 < num2) {
-            correctRelation = "less";
-        } else {
-            correctRelation = "equal";
-        }
-
-        isCorrect = (choice === correctRelation);
-
-        if (isCorrect) {
-            score += 10;
-            correctAnswers++;
-            streak++;
-
-            // Bonus for streaks
-            if (streak >= 5) score += 5;
-            if (streak >= 10) score += 5;
-
-            updateScoreUI();
-            updateStarsProgress();
-
-            // Visual effects
-            setMascotMood('happy');
-            launchConfetti();
-            launchStars();
-
-            // Card flash
-            num1Card.classList.add('correct-flash');
-            num2Card.classList.add('correct-flash');
-
-            // Choice card highlight
-            choiceCards.forEach(c => {
-                if (c.getAttribute('data-choice') === choice) {
-                    c.classList.add('correct-choice');
-                    setTimeout(() => c.classList.remove('correct-choice'), 700);
-                }
-            });
-
-            let symbol = correctRelation === "greater" ? ">" : correctRelation === "less" ? "<" : "=";
-
-            let niceMessages = [
-                `🎉 أحسنت! إجابة صحيحة 🎉`,
-                `🌟 رائعة! ذكي جداً 🌟`,
-                `🍎 ممتاز! واصل هكذا 🍎`,
-                `✅ إجابة صحيحة! عمل رائع ✅`,
-                `🏆 رائع! أنت بطل 🏆`,
-                `🦄 مذهل! استمر 🦄`,
-                `🌈 عبقري! نتيجة رائعة 🌈`
-            ];
-            let randomMsg = niceMessages[Math.floor(Math.random() * niceMessages.length)];
-            feedbackDiv.innerHTML = `${randomMsg}<br>(${num1} ${symbol} ${num2})`;
-            feedbackDiv.className = 'feedback correct';
-
-        } else {
-            streak = 0;
-            updateScoreUI();
-
-            setMascotMood('sad');
-
-            // Card shake
-            num1Card.classList.add('wrong-shake');
-            num2Card.classList.add('wrong-shake');
-            setTimeout(() => {
-                num1Card.classList.remove('wrong-shake');
-                num2Card.classList.remove('wrong-shake');
-            }, 600);
-
-            // Choice card shake
-            choiceCards.forEach(c => {
-                if (c.getAttribute('data-choice') === choice) {
-                    c.classList.add('wrong-choice');
-                    setTimeout(() => c.classList.remove('wrong-choice'), 600);
-                }
-            });
-
-            let expectedSymbol = correctRelation === "greater" ? " > " : correctRelation === "less" ? " < " : " = ";
-
-            let wrongMessages = [
-                "😲 ليس صحيحاً... حاول مرة أخرى!",
-                "🧸 فكر جيداً: من الأكبر؟",
-                "🤔 قارن الأرقام مرة أخرى!",
-                "⭐ لا تقلق، جرب مجدداً ⭐",
-                "📚 تذكر: العدد الكبير > العدد الصغير"
-            ];
-            let randomWrong = wrongMessages[Math.floor(Math.random() * wrongMessages.length)];
-            feedbackDiv.innerHTML = `❌ ${randomWrong}<br>(الصحيح: ${num1}${expectedSymbol}${num2})`;
-            feedbackDiv.className = 'feedback wrong';
-        }
-
-        canAnswer = false;
     }
 
     function updateScoreUI() {
         scoreSpan.textContent = score;
         correctCountSpan.textContent = correctAnswers;
         streakSpan.textContent = streak;
-
-        if (streak >= 3) {
-            streakDisplay.classList.add('active');
-        } else {
-            streakDisplay.classList.remove('active');
-        }
+        if (streak >= 3) streakDisplay.classList.add('active');
+        else streakDisplay.classList.remove('active');
     }
 
-    function resetScore() {
-        score = 0;
-        correctAnswers = 0;
-        streak = 0;
-        updateScoreUI();
-        updateStarsProgress();
-        feedbackDiv.innerHTML = "🧹 تم تصفير النقاط! هيا نبدأ من جديد 🧹";
-        feedbackDiv.className = 'feedback';
-        setMascotMood('think');
+    function checkAnswer(choice) {
+        if (!canAnswer) {
+            feedbackDiv.innerHTML = "⏳ Press 'New Numbers' first! ⏳";
+            feedbackDiv.className = 'feedback';
+            return;
+        }
+        speakChoiceName(choice);
+        let correctRelation = num1 > num2 ? "greater" : (num1 < num2 ? "less" : "equal");
+        let isCorrect = (choice === correctRelation);
+        if (isCorrect) {
+            score += 10;
+            correctAnswers++;
+            streak++;
+            if (streak >= 5) score += 5;
+            if (streak >= 10) score += 5;
+            updateScoreUI();
+            updateStarsProgress();
+            setMascotMood('happy');
+            launchConfetti();
+            launchStars();
+            num1Card.classList.add('correct-flash');
+            num2Card.classList.add('correct-flash');
+            choiceCards.forEach(c => {
+                if (c.getAttribute('data-choice') === choice) {
+                    c.classList.add('correct-choice');
+                    setTimeout(() => c.classList.remove('correct-choice'), 700);
+                }
+            });
+            let symbol = correctRelation === "greater" ? ">" : (correctRelation === "less" ? "<" : "=");
+            feedbackDiv.innerHTML = `🎉 Correct! Well done! 🎉<br>(${num1} ${symbol} ${num2})`;
+            feedbackDiv.className = 'feedback correct';
+        } else {
+            streak = 0;
+            updateScoreUI();
+            setMascotMood('sad');
+            num1Card.classList.add('wrong-shake');
+            num2Card.classList.add('wrong-shake');
+            setTimeout(() => {
+                num1Card.classList.remove('wrong-shake');
+                num2Card.classList.remove('wrong-shake');
+            }, 600);
+            choiceCards.forEach(c => {
+                if (c.getAttribute('data-choice') === choice) {
+                    c.classList.add('wrong-choice');
+                    setTimeout(() => c.classList.remove('wrong-choice'), 600);
+                }
+            });
+            let expectedSymbol = correctRelation === "greater" ? " > " : (correctRelation === "less" ? " < " : " = ");
+            feedbackDiv.innerHTML = `❌ Not quite! The correct is: ${num1}${expectedSymbol}${num2} ❌`;
+            feedbackDiv.className = 'feedback wrong';
+        }
+        canAnswer = false;
     }
 
     function newRandomNumbers() {
         generateRandomNumbers();
         canAnswer = true;
-        feedbackDiv.innerHTML = "🌟 أرقام جديدة! اختر البطاقة المناسبة 🌟";
+        feedbackDiv.innerHTML = "🌟 New numbers! Pick the correct relation 🌟";
         feedbackDiv.className = 'feedback';
         setMascotMood('think');
     }
 
-    // ===== Event Listeners =====
+    function resetScore() {
+        score = 0; correctAnswers = 0; streak = 0;
+        updateScoreUI();
+        updateStarsProgress();
+        feedbackDiv.innerHTML = "🧹 Score reset! Let's start fresh! 🧹";
+        feedbackDiv.className = 'feedback';
+        setMascotMood('think');
+    }
+
+    // Event Listeners
     choiceCards.forEach(card => {
         card.addEventListener('click', (e) => {
             e.stopPropagation();
-            const choice = card.getAttribute('data-choice');
-
             if (!canAnswer) {
-                // Educational: speak the name even when can't answer
-                speakChoiceName(choice);
-                feedbackDiv.innerHTML = "⚠️ اضغط على 'رقمين جديدين' أولاً ⚠️";
+                speakChoiceName(card.getAttribute('data-choice'));
+                feedbackDiv.innerHTML = "⚠️ Press 'New Numbers' first! ⚠️";
                 feedbackDiv.className = 'feedback';
                 return;
             }
-
-            checkAnswer(choice);
+            checkAnswer(card.getAttribute('data-choice'));
         });
     });
-
     newBtn.addEventListener('click', newRandomNumbers);
     resetScoreBtn.addEventListener('click', resetScore);
-
-    // Tap on number cards for hint
-    const numberCards = document.querySelectorAll('.number-card');
-    numberCards.forEach(card => {
+    document.querySelectorAll('.number-card').forEach(card => {
         card.addEventListener('click', () => {
             if (!canAnswer) return;
-            feedbackDiv.innerHTML = `🔍 الرقمان: ${num1} و ${num2}، أيهما أكبر؟ 🔍`;
+            feedbackDiv.innerHTML = `🔍 Compare ${num1} and ${num2} — which is larger? 🔍`;
             feedbackDiv.className = 'feedback';
-
-            // Speak the numbers
-            if (soundEnabled) {
-                speakText(`${num1} and ${num2}`, "en-US");
-            }
+            if (soundEnabled) speakText(`${num1} and ${num2}`, "en-US");
         });
     });
 
-    // ===== Initialize =====
     function initGame() {
         createBubbles();
         generateRandomNumbers();
         canAnswer = true;
-        score = 0;
-        correctAnswers = 0;
-        streak = 0;
+        score = 0; correctAnswers = 0; streak = 0;
         updateScoreUI();
         updateStarsProgress();
-        feedbackDiv.innerHTML = "🐣 اختر البطاقة: أكبر من، أصغر من، أو يساوي 🐣";
-        feedbackDiv.className = 'feedback';
+        feedbackDiv.innerHTML = "🐣 Choose: Greater than, Less than, or Equal to 🐣";
         setMascotMood('think');
     }
-
     initGame();
 </script>
 </body>
